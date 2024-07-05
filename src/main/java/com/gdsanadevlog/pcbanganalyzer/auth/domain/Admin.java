@@ -4,19 +4,16 @@ package com.gdsanadevlog.pcbanganalyzer.auth.domain;
 import lombok.*;
 import jakarta.persistence.*;
 
-
 @Entity
 @Table(name = "admins")
 @Getter
+@Setter
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private int password;
+    private String password;  // 변경된 부분
 
-    @Override
-    public String toString() {
-        return "Admin{id=" + id + ", name='" + name + "'}";
-    }
+
 }
