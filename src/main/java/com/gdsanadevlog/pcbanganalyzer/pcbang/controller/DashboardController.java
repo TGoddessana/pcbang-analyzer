@@ -15,4 +15,9 @@ public class DashboardController {
     public String pcbang() {
         return "pcbang";
     }
+
+    @RequestMapping("/temp")
+    public String temp() {
+        return "pages/temp";
+    }
 }

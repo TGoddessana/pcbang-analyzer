@@ -1,6 +1,4 @@
-package com.gdsanadevlog.pcbanganalyzer.auth.security;
-
-
+package com.gdsanadevlog.pcbanganalyzer.auth.service;
 
 
 import com.gdsanadevlog.pcbanganalyzer.auth.domain.Admin;
@@ -17,15 +15,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
     private final AdminRepository adminRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Admin admin = adminRepository.findByName(username);
-        if(admin == null){
+
+        if (admin == null) {
             throw new UsernameNotFoundException("사용자가 없습니다.");
         }
+
         UserBuilder userBuilder = org.springframework.security.core.userdetails.User.withUsername(username);
         userBuilder.password(admin.getPassword());
-
 
         return userBuilder.build();
     }

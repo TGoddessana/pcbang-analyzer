@@ -17,7 +17,7 @@ public class AdminService {
 
     //회원가입
     @Transactional
-    public Admin registUser(Admin admin){
+    public Admin registerUser(Admin admin){
         //role 추가
 
         //password 암호화해서 넣어줘야한다.
