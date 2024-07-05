@@ -5,9 +5,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <!--공통 JS / CSS 영역을 관리하는 환경 영역-->
-<head th:replace="common/fragments/config :: ConfigFragment">
-    <title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">title</title>
-</head>
+<head th:replace="common/fragments/config :: ConfigFragment"></head>
 
 <body id="page-top">
 
