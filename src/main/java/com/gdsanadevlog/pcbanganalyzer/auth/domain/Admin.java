@@ -13,7 +13,7 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String password;  // 변경된 부분
+    private String password;
 
 
 }

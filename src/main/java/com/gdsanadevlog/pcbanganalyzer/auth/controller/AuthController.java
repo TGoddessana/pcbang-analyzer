@@ -1,14 +1,11 @@
 package com.gdsanadevlog.pcbanganalyzer.auth.controller;
 
-import com.gdsanadevlog.pcbanganalyzer.auth.domain.Admin;
+
 import com.gdsanadevlog.pcbanganalyzer.auth.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
 
 
 @Controller
@@ -17,14 +14,17 @@ public class AuthController {
     private final AdminService adminService;
 
     @GetMapping("/login")
-    public String userregform(){
+    public String userLoginForm() {
         return "pages/auth/login";
     }
 
-
-    @GetMapping("/index")
-    public String welcome(){
-        return "pages/index";
+    @GetMapping("/register")
+    public String userRegisterForm() {
+        return "pages/auth/register";
     }
 
+    @PostMapping("/register")
+    public String userRegister() {
+        return "redirect:/login";
+    }
 }

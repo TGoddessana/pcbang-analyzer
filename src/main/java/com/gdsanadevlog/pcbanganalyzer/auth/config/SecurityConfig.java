@@ -20,15 +20,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login","/").permitAll()
+                        .requestMatchers("/login","/", "/register").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll() // 정적 리소스에 대한 접근 허용
                         .anyRequest().authenticated()
                 )
-
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/index")
+                        .defaultSuccessUrl("/")
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -37,9 +36,8 @@ public class SecurityConfig {
 
                 )
                 .sessionManagement(sessionManagement -> sessionManagement
-                                .maximumSessions(1) //동시 접속 허용 개수
-                                .maxSessionsPreventsLogin(true) //동시 로그인을 차단 defalt - false (먼저 로그인한 사용자 차단)
-                        // true - 애초에 허용개수를 초과하는 사용자는 로그인이 안되도록 차단.
+                                .maximumSessions(1)
+                                .maxSessionsPreventsLogin(true)
                 )
                 .csrf(AbstractHttpConfigurer::disable);
 
