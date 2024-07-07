@@ -6,9 +6,129 @@
       layout:fragment="Content"
 >
 
-<!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Hi!</h1>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h4 class="m-0 font-weight-bold text-primary float-left">분석중인 PC방 목록</h4>
+        <button class="btn btn-primary float-right" data-toggle="modal" data-target="#registerPcbangModal"><i
+                class="fas fa-plus"></i>등록하기
+        </button>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>이름</th>
+                    <th>IP</th>
+                    <th>Port</th>
+                    <th>좌석 수</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>우리동네 PC방</td>
+                    <td>1.1.1.1</td>
+                    <td>1234</td>
+                    <td>10</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="registerPcbangModal" tabindex="-1" role="dialog" aria-labelledby="registerPcbangModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerPcbangModalLabel">새 PC방 등록</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="registerPcbangForm">
+                    <div class="form-group">
+                        <label for="pcbangName">이름</label>
+                        <input type="text" class="form-control" id="pcbangName" placeholder="PC방 이름" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pcbangName">주소</label>
+                        <input type="text" class="form-control" id="pcbangAddress" placeholder="PC방 주소" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pcbangIp">IP</label>
+                        <input type="text" class="form-control" id="pcbangIp" placeholder="IP 주소">
+                    </div>
+                    <div class="form-group">
+                        <label for="pcbangPort">Port</label>
+                        <input type="number" class="form-control" id="pcbangPort" placeholder="Port 번호">
+                    </div>
+                    <div class="form-group">
+                        <label for="pcbangSeatCount">좌석 수</label>
+                        <input type="number" class="form-control" id="pcbangSeatCount" placeholder="좌석 수">
+                    </div>
+                    <div class="form-group">
+                        <label for="pcbangSeatCount">PC 사양</label>
+                        <input type="number" class="form-control" id="pcbangSpec" placeholder="좌석 수">
+                    </div>
+                    <div class="form-group">
+                        <label for="pcbangName">통신사</label>
+                        <input type="text" class="form-control" id="pcbangTelecom" placeholder="통신사">
+                    </div>
+                    <div class="form-group">
+                        <label for="pcbangName">메모</label>
+                        <input type="text" class="form-control" id="pcbangMemo" placeholder="메모">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                        <button type="button" onclick="registerPcbang()" class="btn btn-primary">등록하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function registerPcbang() {
+        const pcbangName = $('#pcbangName').val();
+        const pcbangAddress = $('#pcbangAddress').val();
+        const pcbangIp = $('#pcbangIp').val();
+        const pcbangPort = $('#pcbangPort').val();
+        const pcbangSeatCount = $('#pcbangSeatCount').val();
+        const pcbangSpec = $('#pcbangSpec').val();
+        const pcbangTelecom = $('#pcbangTelecom').val();
+        const pcbangMemo = $('#pcbangMemo').val();
+
+        $.ajax({
+            url: '/pcbangs',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                name: pcbangName,
+                address: pcbangAddress,
+                ip: pcbangIp,
+                port: pcbangPort,
+                seatCount: pcbangSeatCount,
+                pcSpec: pcbangSpec,
+                telecom: pcbangTelecom,
+                memo: pcbangMemo
+            }),
+            success: function (data) {
+                alert('PC방이 등록되었습니다.');
+                location.reload();
+            },
+            error: function (data) {
+                alert('PC방 등록에 실패했습니다.');
+            }
+        });
+    }
+</script>
 
 </html>

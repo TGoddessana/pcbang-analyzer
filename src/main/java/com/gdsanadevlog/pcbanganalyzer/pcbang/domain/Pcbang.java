@@ -54,11 +54,6 @@ public class Pcbang {
                 System.out.println("Port is not open at:" + ip + ":" + port);
             }
         }
-
-        System.out.println("Open count: " + openCount);
-        System.out.println("Close count: " + closeCount);
-
-        System.out.println("좌석 활성화 비율: " + (double) openCount / (openCount + closeCount) * 100 + "%");
     }
 
     public List<String> getAllIps() {
@@ -72,22 +67,5 @@ public class Pcbang {
         }
 
         return ips;
-    }
-
-    public static void main(String[] args) {
-
-        Pcbang pcbang2 = Pcbang.builder()
-                .ip("121.67.67.1")
-                .port(5040)
-                .name("PC방")
-                .address("서울시 강남구")
-                .seatCount(117)
-                .telecom("SKT")
-                .pcSpec("i5-9400F, 16GB, RTX2060")
-                .memo("좋은 PC방")
-                .build();
-
-        pcbang2.isOpen(5040);
-        
     }
 }
