@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PcbangReadDto {
+    private Long id;
     private String ip;
     private int port;
     private String name;
@@ -18,6 +19,7 @@ public class PcbangReadDto {
 
     public static PcbangReadDto fromEntity(Pcbang pcbang) {
         return PcbangReadDto.builder()
+                .id(pcbang.getId())
                 .ip(pcbang.getIp())
                 .port(pcbang.getPort())
                 .name(pcbang.getName())

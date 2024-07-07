@@ -2,7 +2,6 @@ package com.gdsanadevlog.pcbanganalyzer.pcbang.controller;
 
 import com.gdsanadevlog.pcbanganalyzer.pcbang.dto.PcbangCreateDto;
 import com.gdsanadevlog.pcbanganalyzer.pcbang.dto.PcbangReadDto;
-import com.gdsanadevlog.pcbanganalyzer.pcbang.repository.PcbangRepository;
 import com.gdsanadevlog.pcbanganalyzer.pcbang.service.PcbangService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -38,12 +37,23 @@ public class DashboardController {
                               @RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "10") int size) {
 
-        Page<PcbangReadDto> pcbangDtoPage = pcbangService.findPcbangsPaginated(page, size);
+        Page<PcbangReadDto> pcbangDtoPage = pcbangService.listPcbangsPaginated(page, size);
 
         model.addAttribute("pcbangs", pcbangDtoPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", pcbangDtoPage.getTotalPages());
 
         return "pages/dashboard/pcbangs/pcbang-list";
+    }
+
+    @GetMapping("/pcbangs/{id}")
+    @ResponseBody
+    public ResponseEntity<PcbangReadDto> getPcbangDetails(@PathVariable Long id) {
+        try {
+            PcbangReadDto pcbangReadDto = pcbangService.findPcbangById(id);
+            return ResponseEntity.ok(pcbangReadDto);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

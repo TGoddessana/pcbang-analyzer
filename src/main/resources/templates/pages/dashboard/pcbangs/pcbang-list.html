@@ -27,7 +27,8 @@
                 </thead>
                 <tbody>
                 <tr th:each="pcbang : ${pcbangs}">
-                    <td th:text="${pcbang.name}">Name</td>
+                    <td><a href="#" th:attr="onclick='loadPcbangDetails(\'' + ${pcbang.id} + '\')'">
+                        <span th:text="${pcbang.name}">Name</span></a></td>
                     <td th:text="${pcbang.ip}">IP</td>
                     <td th:text="${pcbang.port}">Port</td>
                     <td th:text="${pcbang.seatCount}">Seat Count</td>
@@ -39,11 +40,13 @@
                 <nav aria-label="...">
                     <ul class="pagination justify-content-end mb-0">
                         <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled' : ''">
-                            <a class="page-link" th:href="@{/pcbangs(page=${currentPage - 1}, size=${size})}" tabindex="-1">
+                            <a class="page-link" th:href="@{/pcbangs(page=${currentPage - 1}, size=${size})}"
+                               tabindex="-1">
                                 Previous
                             </a>
                         </li>
-                        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active' : ''">
+                        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                            th:classappend="${i == currentPage} ? 'active' : ''">
                             <a class="page-link" th:href="@{/pcbangs(page=${i}, size=${size})}" th:text="${i + 1}">1</a>
                         </li>
                         <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled' : ''">
@@ -59,6 +62,33 @@
     </div>
 </div>
 
+<!-- PC방 Detail Modal -->
+<div class="modal fade" id="pcbangDetailModal" tabindex="-1" role="dialog" aria-labelledby="pcbangDetailModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pcbangDetailModalLabel">PC방 상세 정보</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>IP:</strong> <span id="detailIp"></span></p>
+                <p><strong>Port:</strong> <span id="detailPort"></span></p>
+                <p><strong>이름:</strong> <span id="detailName"></span></p>
+                <p><strong>주소:</strong> <span id="detailAddress"></span></p>
+                <p><strong>좌석 수:</strong> <span id="detailSeatCount"></span></p>
+                <p><strong>PC 사양:</strong> <span id="detailSpec"></span></p>
+                <p><strong>통신사:</strong> <span id="detailTelecom"></span></p>
+                <p><strong>메모:</strong> <span id="detailMemo"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="registerPcbangModal" tabindex="-1" role="dialog" aria-labelledby="registerPcbangModalLabel"
@@ -117,6 +147,28 @@
 </div>
 
 <script>
+    function loadPcbangDetails(id) {
+        $.ajax({
+            url: `/pcbangs/${id}`,
+            type: 'GET',
+            success: function (data) {
+                $('#detailIp').text(data.ip);
+                $('#detailPort').text(data.port);
+                $('#detailName').text(data.name);
+                $('#detailAddress').text(data.address);
+                $('#detailSeatCount').text(data.seatCount);
+                $('#detailSpec').text(data.pcSpec);
+                $('#detailTelecom').text(data.telecom);
+                $('#detailMemo').text(data.memo);
+
+                $('#pcbangDetailModal').modal('show');
+            },
+            error: function () {
+                alert('Failed to load PC방 details.');
+            }
+        });
+    }
+
     function registerPcbang() {
         const pcbangName = $('#pcbangName').val();
         const pcbangAddress = $('#pcbangAddress').val();

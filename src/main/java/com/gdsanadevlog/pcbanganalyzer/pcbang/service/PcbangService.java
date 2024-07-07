@@ -18,9 +18,15 @@ public class PcbangService {
         pcbangRepository.save(pcbangCreateDto.toEntity());
     }
 
-    public Page<PcbangReadDto> findPcbangsPaginated(int page, int size) {
+    public Page<PcbangReadDto> listPcbangsPaginated(int page, int size) {
         Page<Pcbang> pcbangPage = pcbangRepository.findAll(PageRequest.of(page, size));
 
         return pcbangPage.map(PcbangReadDto::fromEntity);
+    }
+
+    public PcbangReadDto findPcbangById(Long id) {
+        return pcbangRepository.findById(id)
+                .map(PcbangReadDto::fromEntity)
+                .orElseThrow(() -> new IllegalArgumentException("Pcbang not found"));
     }
 }
