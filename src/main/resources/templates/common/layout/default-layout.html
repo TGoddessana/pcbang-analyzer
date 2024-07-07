@@ -14,6 +14,9 @@
     <!-- Header 영역을 참조합니다.-->
     <header th:replace="common/fragments/header :: HeaderFragment"></header>
 
+    <!-- Sidebar 영역을 참조합니다.-->
+    <div th:replace="common/fragments/sidebar :: SidebarFragment"></div>
+
     <!--Content 내용 영역을 참조합니다-->
     <th:block layout:fragment="Content"></th:block>
 
