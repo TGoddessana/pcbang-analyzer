@@ -62,7 +62,7 @@
     </div>
 </div>
 
-<!-- PC방 Detail Modal -->
+<!-- PC방 상세조회 Modal -->
 <div class="modal fade" id="pcbangDetailModal" tabindex="-1" role="dialog" aria-labelledby="pcbangDetailModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -84,13 +84,15 @@
                 <p><strong>메모:</strong> <span id="detailMemo"></span></p>
             </div>
             <div class="modal-footer">
+                <button id="deletePcbangButton" type="button" class="btn btn-danger" onclick="deletePcbang(id)">삭제하기
+                </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal -->
+<!-- PC방 등록 Modal -->
 <div class="modal fade" id="registerPcbangModal" tabindex="-1" role="dialog" aria-labelledby="registerPcbangModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -152,6 +154,8 @@
             url: `/pcbangs/${id}`,
             type: 'GET',
             success: function (data) {
+                $('#deletePcbangButton').attr('id', data.id);
+
                 $('#detailIp').text(data.ip);
                 $('#detailPort').text(data.port);
                 $('#detailName').text(data.name);
@@ -201,6 +205,25 @@
                 alert('PC방 등록에 실패했습니다.');
             }
         });
+    }
+
+    function deletePcbang(id) {
+        console.log(id);
+
+        if (confirm('정말로 삭제하시겠습니까?')) {
+            $.ajax({
+                url: `/pcbangs/${id}`,
+                type: 'DELETE',
+                success: function () {
+                    alert('PC방이 성공적으로 삭제되었습니다.');
+                    $('#pcbangDetailModal').modal('hide');
+                    location.reload(); // Refresh the page to update the list
+                },
+                error: function () {
+                    alert('PC방 삭제에 실패했습니다.');
+                }
+            });
+        }
     }
 </script>
 

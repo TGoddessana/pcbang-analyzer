@@ -29,4 +29,8 @@ public class PcbangService {
                 .map(PcbangReadDto::fromEntity)
                 .orElseThrow(() -> new IllegalArgumentException("Pcbang not found"));
     }
+
+    public void deletePcbangById(Long id) {
+        pcbangRepository.deleteById(id);
+    }
 }
