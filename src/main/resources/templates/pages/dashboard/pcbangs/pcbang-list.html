@@ -27,7 +27,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="pcbang : ${pcbangs}">
-                    <td><a href="#" th:attr="onclick='loadPcbangDetails(\'' + ${pcbang.id} + '\')'">
+                    <td><a href="#" th:attr="onclick='readPcbangDetails(\'' + ${pcbang.id} + '\')'">
                         <span th:text="${pcbang.name}">Name</span></a></td>
                     <td th:text="${pcbang.ip}">IP</td>
                     <td th:text="${pcbang.port}">Port</td>
@@ -74,16 +74,17 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p><strong>IP:</strong> <span id="detailIp"></span></p>
-                <p><strong>Port:</strong> <span id="detailPort"></span></p>
-                <p><strong>이름:</strong> <span id="detailName"></span></p>
-                <p><strong>주소:</strong> <span id="detailAddress"></span></p>
-                <p><strong>좌석 수:</strong> <span id="detailSeatCount"></span></p>
-                <p><strong>PC 사양:</strong> <span id="detailSpec"></span></p>
-                <p><strong>통신사:</strong> <span id="detailTelecom"></span></p>
-                <p><strong>메모:</strong> <span id="detailMemo"></span></p>
+                <p><strong>IP:</strong> <input type="text" id="detailIp" value="" disabled></p>
+                <p><strong>Port:</strong> <input type="text" id="detailPort" value=""></p>
+                <p><strong>이름:</strong> <input type="text" id="detailName" value=""></p>
+                <p><strong>주소:</strong> <input type="text" id="detailAddress" value=""></p>
+                <p><strong>좌석 수:</strong> <input type="text" id="detailSeatCount" value=""></p>
+                <p><strong>PC 사양:</strong> <input type="text" id="detailSpec" value=""></p>
+                <p><strong>통신사:</strong> <input type="text" id="detailTelecom" value=""></p>
+                <p><strong>메모:</strong> <input type="text" id="detailMemo" value=""></p>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="editPcbangButton" onclick="updatePcbangDetails(id)">수정하기</button>
                 <button id="deletePcbangButton" type="button" class="btn btn-danger" onclick="deletePcbang(id)">삭제하기
                 </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
@@ -126,7 +127,7 @@
                         <input type="number" class="form-control" id="pcbangSeatCount" placeholder="좌석 수">
                     </div>
                     <div class="form-group">
-                        <label for="pcbangSeatCount">PC 사양</label>
+                        <label for="pcbangSpec">PC 사양</label>
                         <input type="number" class="form-control" id="pcbangSpec" placeholder="좌석 수">
                     </div>
                     <div class="form-group">
@@ -140,7 +141,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                        <button type="button" onclick="registerPcbang()" class="btn btn-primary">등록하기</button>
+                        <button type="button" onclick="createPcbang()" class="btn btn-primary">등록하기</button>
                     </div>
                 </form>
             </div>
@@ -149,31 +150,7 @@
 </div>
 
 <script>
-    function loadPcbangDetails(id) {
-        $.ajax({
-            url: `/pcbangs/${id}`,
-            type: 'GET',
-            success: function (data) {
-                $('#deletePcbangButton').attr('id', data.id);
-
-                $('#detailIp').text(data.ip);
-                $('#detailPort').text(data.port);
-                $('#detailName').text(data.name);
-                $('#detailAddress').text(data.address);
-                $('#detailSeatCount').text(data.seatCount);
-                $('#detailSpec').text(data.pcSpec);
-                $('#detailTelecom').text(data.telecom);
-                $('#detailMemo').text(data.memo);
-
-                $('#pcbangDetailModal').modal('show');
-            },
-            error: function () {
-                alert('Failed to load PC방 details.');
-            }
-        });
-    }
-
-    function registerPcbang() {
+    function createPcbang() {
         const pcbangName = $('#pcbangName').val();
         const pcbangAddress = $('#pcbangAddress').val();
         const pcbangIp = $('#pcbangIp').val();
@@ -207,9 +184,67 @@
         });
     }
 
-    function deletePcbang(id) {
-        console.log(id);
+    function readPcbangDetails(id) {
+        $.ajax({
+            url: `/pcbangs/${id}`,
+            type: 'GET',
+            success: function (data) {
+                $('#deletePcbangButton').attr('id', data.id);
+                $('#editPcbangButton').attr('id', data.id);
 
+                $('#detailIp').val(data.ip);
+                $('#detailPort').val(data.port);
+                $('#detailName').val(data.name);
+                $('#detailAddress').val(data.address);
+                $('#detailSeatCount').val(data.seatCount);
+                $('#detailSpec').val(data.pcSpec);
+                $('#detailTelecom').val(data.telecom);
+                $('#detailMemo').val(data.memo);
+
+                $('#pcbangDetailModal').modal('show');
+            },
+            error: function () {
+                alert('Failed to load PC방 details.');
+            }
+        });
+    }
+
+    function updatePcbangDetails(id) {
+        const pcbangName = $('#detailName').val();
+        const pcbangAddress = $('#detailAddress').val();
+        const pcbangIp = $('#detailIp').val();
+        const pcbangPort = $('#detailPort').val();
+        const pcbangSeatCount = $('#detailSeatCount').val();
+        const pcbangSpec = $('#detailSpec').val();
+        const pcbangTelecom = $('#detailTelecom').val();
+        const pcbangMemo = $('#detailMemo').val();
+
+        $.ajax({
+            url: `/pcbangs/${id}`,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                name: pcbangName,
+                address: pcbangAddress,
+                ip: pcbangIp,
+                port: pcbangPort,
+                seatCount: pcbangSeatCount,
+                pcSpec: pcbangSpec,
+                telecom: pcbangTelecom,
+                memo: pcbangMemo
+            }),
+            success: function () {
+                alert('PC방이 성공적으로 수정되었습니다.');
+                $('#pcbangDetailModal').modal('hide');
+                location.reload();
+            },
+            error: function () {
+                alert('PC방 수정에 실패했습니다.');
+            }
+        });
+    }
+
+    function deletePcbang(id) {
         if (confirm('정말로 삭제하시겠습니까?')) {
             $.ajax({
                 url: `/pcbangs/${id}`,

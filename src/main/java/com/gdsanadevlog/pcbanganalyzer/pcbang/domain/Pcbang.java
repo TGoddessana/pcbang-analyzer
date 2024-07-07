@@ -70,4 +70,17 @@ public class Pcbang {
 
         return ips;
     }
+
+    public void updatePcbang(
+            String ip, int port, String name, String address, int seatCount, String telecom, String pcSpec, String memo
+    ) {
+        this.ip = ip;
+        this.port = port;
+        this.name = name;
+        this.address = address;
+        this.seatCount = seatCount;
+        this.telecom = telecom;
+        this.pcSpec = pcSpec;
+        this.memo = memo;
+    }
 }
