@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
+<html lang="ko"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layout/default-layout}"
       layout:fragment="Content"
@@ -19,17 +18,21 @@
                             <h1 class="h4 text-gray-900 mb-4">관리자 로그인</h1>
                         </div>
                         <form action="/login" method="post" class="user">
+
+
                             <div class="form-group">
                                 <input type="text" class="form-control form-control-user"
-                                       id="uesrname" name="username" placeholder="관리자 이름을 입력하세요...">
+                                       id="username" name="username" placeholder="관리자 이름을 입력하세요...">
                             </div>
                             <div class="form-group">
                                 <input type="password" class="form-control form-control-user"
                                        id="password" name="password" placeholder="비밀번호를 입력하세요..." required>
                             </div>
+
                             <button type="submit" class="btn btn-primary btn-user btn-block">
                                 로그인
                             </button>
+
                             <a href="/register" class="btn btn-primary btn-user btn-block">
                                 회원가입
                             </a>

@@ -2,6 +2,7 @@ package com.gdsanadevlog.pcbanganalyzer.pcbang.controller;
 
 import com.gdsanadevlog.pcbanganalyzer.pcbang.dto.PcbangCreateDto;
 import com.gdsanadevlog.pcbanganalyzer.pcbang.dto.PcbangReadDto;
+import com.gdsanadevlog.pcbanganalyzer.pcbang.dto.PcbangUpdateDto;
 import com.gdsanadevlog.pcbanganalyzer.pcbang.service.PcbangService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class DashboardController {
     private final PcbangService pcbangService;
 
-    @GetMapping("")
+    @GetMapping
     public String index() {
         return "pages/index";
     }
@@ -54,6 +55,17 @@ public class DashboardController {
             return ResponseEntity.ok(pcbangReadDto);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/pcbangs/{id}")
+    @ResponseBody
+    public ResponseEntity<PcbangReadDto> updatePcbang(@PathVariable Long id, @RequestBody PcbangUpdateDto pcbangUpdateDto) {
+        try {
+            pcbangService.updatePcbang(id, pcbangUpdateDto);
+            return ResponseEntity.ok(pcbangService.findPcbangById(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 
