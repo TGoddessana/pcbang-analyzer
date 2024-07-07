@@ -17,8 +17,17 @@
     <!-- Sidebar 영역을 참조합니다.-->
     <div th:replace="common/fragments/sidebar :: SidebarFragment"></div>
 
-    <!--Content 내용 영역을 참조합니다-->
-    <th:block layout:fragment="Content"></th:block>
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <!-- Topbar 영역을 참조합니다.-->
+            <div th:replace="common/fragments/topbar :: TopbarFragment"></div>
+
+            <!--Content 내용 영역을 참조합니다-->
+            <div class="container-fluid">
+                <th:block layout:fragment="Content"></th:block>
+            </div>
+        </div>
+    </div>
 
     <!--Footer 영역을 참조합니다.-->
     <footer th:replace="common/fragments/footer :: FooterFragment"></footer>

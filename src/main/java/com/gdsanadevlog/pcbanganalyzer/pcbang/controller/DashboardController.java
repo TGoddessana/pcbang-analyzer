@@ -11,8 +11,8 @@ public class DashboardController {
         return "pages/index";
     }
 
-    @RequestMapping("/pcbang")
-    public String pcbang() {
-        return "pcbang";
+    @RequestMapping("/pcbangs")
+    public String pcbangs() {
+        return "pages/dashboard/pcbangs/pcbang-list";
     }
 }
