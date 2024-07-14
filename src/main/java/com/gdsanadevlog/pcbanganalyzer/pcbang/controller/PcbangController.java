@@ -43,6 +43,6 @@ public class PcbangController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", pcbangDtoPage.getTotalPages());
 
-        return "pages/dashboard/pcbangs/pcbang-list";
+        return "pages/pcbang/pcbang-list";
     }
 }
