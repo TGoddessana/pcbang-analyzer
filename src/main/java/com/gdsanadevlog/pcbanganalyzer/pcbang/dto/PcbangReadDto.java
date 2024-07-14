@@ -9,6 +9,7 @@ import lombok.Getter;
 public class PcbangReadDto {
     private Long id;
     private String ip;
+    private String ipRange;
     private int port;
     private String name;
     private String address;
@@ -21,6 +22,7 @@ public class PcbangReadDto {
         return PcbangReadDto.builder()
                 .id(pcbang.getId())
                 .ip(pcbang.getIp())
+                .ipRange(pcbang.getAllIps().get(0) + " ~ " + pcbang.getAllIps().get(pcbang.getSeatCount() - 1))
                 .port(pcbang.getPort())
                 .name(pcbang.getName())
                 .address(pcbang.getAddress())

@@ -20,8 +20,8 @@
                 <thead>
                 <tr>
                     <th>이름</th>
-                    <th>IP</th>
-                    <th>Port</th>
+                    <th>IP 범위</th>
+                    <th>포트</th>
                     <th>좌석 수</th>
                 </tr>
                 </thead>
@@ -29,7 +29,7 @@
                 <tr th:each="pcbang : ${pcbangs}">
                     <td><a href="#" th:attr="onclick='readPcbangDetails(\'' + ${pcbang.id} + '\')'">
                         <span th:text="${pcbang.name}">Name</span></a></td>
-                    <td th:text="${pcbang.ip}">IP</td>
+                    <td th:text="${pcbang.ipRange}">IP</td>
                     <td th:text="${pcbang.port}">Port</td>
                     <td th:text="${pcbang.seatCount}">Seat Count</td>
                 </tr>
