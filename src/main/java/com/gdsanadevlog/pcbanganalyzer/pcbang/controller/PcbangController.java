@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/")
 @RequiredArgsConstructor
-public class DashboardController {
+public class PcbangController {
     private final PcbangService pcbangService;
 
     @GetMapping("")
@@ -46,6 +46,8 @@ public class DashboardController {
 
         return "pages/dashboard/pcbangs/pcbang-list";
     }
+
+    // Web API (PC방 CRUD)
 
     @GetMapping("/pcbangs/{id}")
     @ResponseBody
