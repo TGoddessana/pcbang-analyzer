@@ -72,7 +72,6 @@ public class DashboardController {
     @DeleteMapping("/pcbangs/{id}")
     @ResponseBody
     public ResponseEntity<String> deletePcbang(@PathVariable Long id) {
-        System.out.println("id = " + id);
         try {
             pcbangService.deletePcbangById(id);
             return ResponseEntity.ok("Pcbang deleted successfully");

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class Pcbang {
     private String pcSpec;
     private String memo;
 
-    public void isOpen(int port) {
+    public AnalyzeHistory analyze(LocalDateTime analyzedAt) {
         int openCount = 0;
         int closeCount = 0;
 
@@ -50,12 +51,17 @@ public class Pcbang {
                 socket.connect(new InetSocketAddress(ip, port), 200);
                 socket.close();
                 openCount++;
-                System.out.println("Port is open at:" + ip + ":" + port);
             } catch (IOException e) {
                 closeCount++;
-                System.out.println("Port is not open at:" + ip + ":" + port);
             }
         }
+
+        return AnalyzeHistory.builder()
+                .pcbang(this)
+                .openCount(openCount)
+                .closeCount(closeCount)
+                .analyzedAt(analyzedAt)
+                .build();
     }
 
     public List<String> getAllIps() {

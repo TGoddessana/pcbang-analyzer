@@ -3,9 +3,11 @@ package com.gdsanadevlog.pcbanganalyzer.pcbang.dto;
 import com.gdsanadevlog.pcbanganalyzer.pcbang.domain.Pcbang;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
 @Builder
+@ToString
 public class PcbangReadDto {
     private Long id;
     private String ip;
