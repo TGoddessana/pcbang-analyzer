@@ -163,7 +163,7 @@
         const pcbangMemo = $('#pcbangMemo').val();
 
         $.ajax({
-            url: '/pcbangs',
+            url: 'api/pcbangs',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
@@ -188,7 +188,7 @@
 
     function readPcbangDetails(id) {
         $.ajax({
-            url: `/pcbangs/${id}`,
+            url: `api/pcbangs/${id}`,
             type: 'GET',
             success: function (data) {
                 $('#deletePcbangButton').attr('id', data.id);
@@ -222,7 +222,7 @@
         const pcbangMemo = $('#detailMemo').val();
 
         $.ajax({
-            url: `/pcbangs/${id}`,
+            url: `api/pcbangs/${id}`,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify({
@@ -249,7 +249,7 @@
     function deletePcbang(id) {
         if (confirm('정말로 삭제하시겠습니까?')) {
             $.ajax({
-                url: `/pcbangs/${id}`,
+                url: `api/pcbangs/${id}`,
                 type: 'DELETE',
                 success: function () {
                     alert('PC방이 성공적으로 삭제되었습니다.');

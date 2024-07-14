@@ -2,7 +2,6 @@ package com.gdsanadevlog.pcbanganalyzer.pcbang.controller;
 
 import com.gdsanadevlog.pcbanganalyzer.pcbang.dto.PcbangCreateDto;
 import com.gdsanadevlog.pcbanganalyzer.pcbang.dto.PcbangReadDto;
-import com.gdsanadevlog.pcbanganalyzer.pcbang.dto.PcbangUpdateDto;
 import com.gdsanadevlog.pcbanganalyzer.pcbang.service.PcbangService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -45,40 +44,5 @@ public class PcbangController {
         model.addAttribute("totalPages", pcbangDtoPage.getTotalPages());
 
         return "pages/dashboard/pcbangs/pcbang-list";
-    }
-
-    // Web API (PC방 CRUD)
-
-    @GetMapping("/pcbangs/{id}")
-    @ResponseBody
-    public ResponseEntity<PcbangReadDto> getPcbangDetails(@PathVariable Long id) {
-        try {
-            PcbangReadDto pcbangReadDto = pcbangService.findPcbangById(id);
-            return ResponseEntity.ok(pcbangReadDto);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PutMapping("/pcbangs/{id}")
-    @ResponseBody
-    public ResponseEntity<PcbangReadDto> updatePcbang(@PathVariable Long id, @RequestBody PcbangUpdateDto pcbangUpdateDto) {
-        try {
-            pcbangService.updatePcbang(id, pcbangUpdateDto);
-            return ResponseEntity.ok(pcbangService.findPcbangById(id));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @DeleteMapping("/pcbangs/{id}")
-    @ResponseBody
-    public ResponseEntity<String> deletePcbang(@PathVariable Long id) {
-        try {
-            pcbangService.deletePcbangById(id);
-            return ResponseEntity.ok("Pcbang deleted successfully");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 }
