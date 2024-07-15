@@ -16,11 +16,6 @@ import org.springframework.web.bind.annotation.*;
 public class PcbangController {
     private final PcbangService pcbangService;
 
-    @GetMapping("")
-    public String index() {
-        return "pages/index";
-    }
-
     @PostMapping("/pcbangs")
     @ResponseBody
     public ResponseEntity<PcbangCreateDto> createPcbang(@RequestBody PcbangCreateDto pcbangCreateDto) {

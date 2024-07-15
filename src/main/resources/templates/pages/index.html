@@ -7,122 +7,61 @@
 >
 
 
-<!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-</div>
-
-<!-- Content Row -->
-<div class="row">
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Earnings (Monthly)
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h4 class="m-0 font-weight-bold text-primary float-left">PC방 분석 기록</h4>
     </div>
 
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            Earnings (Annual)
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>아이디</th>
+                    <th>이름</th>
+                    <th>분석 시간</th>
+                    <th>켜져있는 좌석 수</th>
+                    <th>꺼져있는 좌석 수</th>
+                    <th>가동률</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="analyzeHistory : ${analyzeHistories}">
+                    <td th:text="${analyzeHistory.id}"></td>
+                    <td th:text="${analyzeHistory.pcbangName}"></td>
+                    <td th:text="${#temporals.format(analyzeHistory.analyzedAt, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}"></td>
+                    <td th:text="${analyzeHistory.openCount}"></td>
+                    <td th:text="${analyzeHistory.closeCount}"></td>
+                    <td th:text="${analyzeHistory.openRate} + '%'"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="card-footer py-4">
+                <nav aria-label="...">
+                    <ul class="pagination justify-content-end mb-0">
+                        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled' : ''">
+                            <a class="page-link" th:href="@{/analyzeHistorys(page=${currentPage - 1}, size=${size})}"
+                               tabindex="-1">
+                                Previous
+                            </a>
+                        </li>
+                        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                            th:classappend="${i == currentPage} ? 'active' : ''">
+                            <a class="page-link" th:href="@{/analyzeHistorys(page=${i}, size=${size})}"
+                               th:text="${i + 1}">1</a>
+                        </li>
+                        <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled' : ''">
+                            <a class="page-link" th:href="@{/analyzeHistorys(page=${currentPage + 1}, size=${size})}">
+                                Next
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
+
         </div>
     </div>
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-info shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
-                        </div>
-                        <div class="row no-gutters align-items-center">
-                            <div class="col-auto">
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                            </div>
-                            <div class="col">
-                                <div class="progress progress-sm mr-2">
-                                    <div class="progress-bar bg-info" role="progressbar"
-                                         style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                         aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Pending Requests Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                            Pending Requests
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-comments fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Content Row -->
-
-<div class="row">
-
-    <!-- Area Chart -->
-    <div class="col-xl-12 col-lg-7">
-        <div class="card shadow mb-4">
-            <!-- Card Header - Dropdown -->
-            <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
-            </div>
-            <!-- Card Body -->
-            <div class="card-body">
-                <div class="chart-area">
-                    <canvas id="myAreaChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
 
 </html>

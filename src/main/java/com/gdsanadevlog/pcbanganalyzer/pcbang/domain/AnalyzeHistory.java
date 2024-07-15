@@ -2,16 +2,14 @@ package com.gdsanadevlog.pcbanganalyzer.pcbang.domain;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Builder
 @Getter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "analyze_histories")
