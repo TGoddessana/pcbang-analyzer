@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/")
 @RequiredArgsConstructor
-public class DashboardController {
+public class PcbangController {
     private final PcbangService pcbangService;
 
     @PostMapping("/pcbangs")
@@ -38,7 +38,7 @@ public class DashboardController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", pcbangDtoPage.getTotalPages());
 
-        return "pages/dashboard/pcbangs/pcbang-list";
+        return "pages/pcbang/pcbang-list";
     }
 
     @GetMapping("/pcbangs/{id}")
