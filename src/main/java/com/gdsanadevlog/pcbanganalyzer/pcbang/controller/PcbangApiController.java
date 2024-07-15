@@ -5,25 +5,16 @@ import com.gdsanadevlog.pcbanganalyzer.pcbang.dto.PcbangReadDto;
 import com.gdsanadevlog.pcbanganalyzer.pcbang.dto.PcbangUpdateDto;
 import com.gdsanadevlog.pcbanganalyzer.pcbang.service.PcbangService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/")
+@RestController
+@RequestMapping("/api/pcbangs")
 @RequiredArgsConstructor
-public class DashboardController {
+public class PcbangApiController {
     private final PcbangService pcbangService;
 
-    @GetMapping
-    public String index() {
-        return "pages/index";
-    }
-
-    @PostMapping("/pcbangs")
-    @ResponseBody
+    @PostMapping("")
     public ResponseEntity<PcbangCreateDto> createPcbang(@RequestBody PcbangCreateDto pcbangCreateDto) {
         try {
             pcbangService.savePcbang(pcbangCreateDto);
@@ -33,22 +24,7 @@ public class DashboardController {
         }
     }
 
-    @GetMapping("/pcbangs")
-    public String listPcbangs(Model model,
-                              @RequestParam(defaultValue = "0") int page,
-                              @RequestParam(defaultValue = "10") int size) {
-
-        Page<PcbangReadDto> pcbangDtoPage = pcbangService.listPcbangsPaginated(page, size);
-
-        model.addAttribute("pcbangs", pcbangDtoPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", pcbangDtoPage.getTotalPages());
-
-        return "pages/dashboard/pcbangs/pcbang-list";
-    }
-
-    @GetMapping("/pcbangs/{id}")
-    @ResponseBody
+    @GetMapping("/{id}")
     public ResponseEntity<PcbangReadDto> getPcbangDetails(@PathVariable Long id) {
         try {
             PcbangReadDto pcbangReadDto = pcbangService.findPcbangById(id);
@@ -58,8 +34,7 @@ public class DashboardController {
         }
     }
 
-    @PutMapping("/pcbangs/{id}")
-    @ResponseBody
+    @PutMapping("/{id}")
     public ResponseEntity<PcbangReadDto> updatePcbang(@PathVariable Long id, @RequestBody PcbangUpdateDto pcbangUpdateDto) {
         try {
             pcbangService.updatePcbang(id, pcbangUpdateDto);
@@ -69,10 +44,8 @@ public class DashboardController {
         }
     }
 
-    @DeleteMapping("/pcbangs/{id}")
-    @ResponseBody
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePcbang(@PathVariable Long id) {
-        System.out.println("id = " + id);
         try {
             pcbangService.deletePcbangById(id);
             return ResponseEntity.ok("Pcbang deleted successfully");
