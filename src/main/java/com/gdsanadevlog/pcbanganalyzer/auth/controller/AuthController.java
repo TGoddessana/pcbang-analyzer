@@ -16,31 +16,33 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class AuthController {
     private final AdminService adminService;
 
-    @GetMapping("/login_form") // 로그인 화면
+    @GetMapping("/login") // 로그인 화면
     public String userLoginForm() {
-        return "pages/auth/login_form";
+        return "pages/auth/login-form";
     }
 
 
     @GetMapping("/register") // 회원가입 화면
     public String userRegister() {
-        return "/pages/auth/register";
+        return "pages/auth/register-form";
     }
 
 
     @PostMapping("/register") // 회원가입 화면
     public String userRegisterForm(@ModelAttribute("admin") Admin admin, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "pages/auth/register";
+            return "pages/auth/register-form";
         }
+
         Admin byName = adminService.findByName(admin.getName());
-        if(byName != null){
-            bindingResult.rejectValue("name",null,"이미 사용중인 아이디입니다.");
-            return "pages/auth/register";
+
+        if (byName != null) {
+            bindingResult.rejectValue("name", "이미 사용중인 아이디입니다.");
+            return "pages/auth/register-form";
         }
 
         adminService.registerUser(admin);
-        return "redirect:/pages/auth/login_form";
+        return "redirect:/pages/auth/login-form";
     }
 
 

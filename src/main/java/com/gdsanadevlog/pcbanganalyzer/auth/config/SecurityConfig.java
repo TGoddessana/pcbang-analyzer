@@ -20,25 +20,33 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login","/", "/register").permitAll()
-                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll() // 정적 리소스에 대한 접근 허용
-                        .anyRequest().authenticated()
+                        .requestMatchers("/css/**", "/js/**", "/vendor/**")
+                        .permitAll()
                 )
+
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/login", "/register")
+                        .permitAll()
+                )
+
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/")
                         .permitAll()
                 )
+
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/")
 
                 )
+
                 .sessionManagement(sessionManagement -> sessionManagement
                                 .maximumSessions(1)
                                 .maxSessionsPreventsLogin(true)
                 )
+
                 .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
