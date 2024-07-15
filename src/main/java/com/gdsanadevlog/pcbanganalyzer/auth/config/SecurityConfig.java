@@ -19,26 +19,26 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
-//                .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers("/login", "/register").permitAll()
-//                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll() // 정적 리소스에 대한 접근 허용
-//                        .anyRequest().authenticated()
-//                )
-//                .formLogin(form -> form
-//                        .loginPage("/login")
-//                        .loginProcessingUrl("/login")
-//                        .defaultSuccessUrl("/")
-//                        .permitAll()
-//                )
-//                .logout(logout -> logout
-//                        .logoutUrl("/logout")
-//                        .logoutSuccessUrl("/")
-//
-//                )
-//                .sessionManagement(sessionManagement -> sessionManagement
-//                                .maximumSessions(1)
-//                                .maxSessionsPreventsLogin(true)
-//                )
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/login","/", "/register").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll() // 정적 리소스에 대한 접근 허용
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/")
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+
+                )
+                .sessionManagement(sessionManagement -> sessionManagement
+                                .maximumSessions(1)
+                                .maxSessionsPreventsLogin(true)
+                )
                 .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();

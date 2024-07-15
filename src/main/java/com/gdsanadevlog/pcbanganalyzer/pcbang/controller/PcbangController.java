@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/")
 @RequiredArgsConstructor
-public class PcbangController {
+public class DashboardController {
     private final PcbangService pcbangService;
 
     @PostMapping("/pcbangs")
@@ -38,6 +38,29 @@ public class PcbangController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", pcbangDtoPage.getTotalPages());
 
-        return "pages/pcbang/pcbang-list";
+        return "pages/dashboard/pcbangs/pcbang-list";
+    }
+
+    @GetMapping("/pcbangs/{id}")
+    @ResponseBody
+    public ResponseEntity<PcbangReadDto> getPcbangDetails(@PathVariable Long id) {
+        try {
+            PcbangReadDto pcbangReadDto = pcbangService.findPcbangById(id);
+            return ResponseEntity.ok(pcbangReadDto);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/pcbangs/{id}")
+    @ResponseBody
+    public ResponseEntity<String> deletePcbang(@PathVariable Long id) {
+        System.out.println("id = " + id);
+        try {
+            pcbangService.deletePcbangById(id);
+            return ResponseEntity.ok("Pcbang deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

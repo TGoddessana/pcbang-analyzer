@@ -18,16 +18,15 @@ public class AdminService {
     //회원가입
     @Transactional
     public Admin registerUser(Admin admin){
-        //role 추가
 
         //password 암호화해서 넣어줘야한다.
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
-
+        // admin에서 password를 가져온 뒤 인코드를 하고, DB에 저장.
         return  adminRepository.save(admin);
     }
 
     @Transactional(readOnly = true)
-    public Admin findByUsername(String username){
-        return adminRepository.findByName(username);
+    public Admin findByName(String name){
+        return adminRepository.findByName(name);
     }
 }
