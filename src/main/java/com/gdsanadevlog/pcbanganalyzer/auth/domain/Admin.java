@@ -8,6 +8,9 @@ import jakarta.persistence.*;
 @Table(name = "admins")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
