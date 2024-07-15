@@ -1,6 +1,7 @@
 package com.gdsanadevlog.pcbanganalyzer.auth.config;
 
 
+import com.gdsanadevlog.pcbanganalyzer.auth.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final CustomUserDetailService customUserDetailService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
@@ -27,6 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/login", "/register")
                         .permitAll()
+                        .anyRequest().authenticated()
                 )
 
                 .formLogin(form -> form
@@ -38,16 +41,15 @@ public class SecurityConfig {
 
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/")
-
+                        .logoutSuccessUrl("/login")
                 )
 
                 .sessionManagement(sessionManagement -> sessionManagement
-                                .maximumSessions(1)
+                                .maximumSessions(100)
                                 .maxSessionsPreventsLogin(true)
                 )
-
-                .csrf(AbstractHttpConfigurer::disable);
+                .userDetailsService(customUserDetailService)
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
