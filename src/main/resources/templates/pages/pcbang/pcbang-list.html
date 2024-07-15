@@ -19,19 +19,17 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
-                    <th>아이디</th>
                     <th>이름</th>
-                    <th>IP 범위</th>
-                    <th>포트</th>
+                    <th>IP</th>
+                    <th>Port</th>
                     <th>좌석 수</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="pcbang : ${pcbangs}">
-                    <td th:text="${pcbang.id}">ID</td>
                     <td><a href="#" th:attr="onclick='readPcbangDetails(\'' + ${pcbang.id} + '\')'">
                         <span th:text="${pcbang.name}">Name</span></a></td>
-                    <td th:text="${pcbang.ipRange}">IP</td>
+                    <td th:text="${pcbang.ip}">IP</td>
                     <td th:text="${pcbang.port}">Port</td>
                     <td th:text="${pcbang.seatCount}">Seat Count</td>
                 </tr>
@@ -130,7 +128,7 @@
                     </div>
                     <div class="form-group">
                         <label for="pcbangSpec">PC 사양</label>
-                        <input type="text" class="form-control" id="pcbangSpec" placeholder="사양">
+                        <input type="number" class="form-control" id="pcbangSpec" placeholder="좌석 수">
                     </div>
                     <div class="form-group">
                         <label for="pcbangName">통신사</label>
@@ -163,7 +161,7 @@
         const pcbangMemo = $('#pcbangMemo').val();
 
         $.ajax({
-            url: 'api/pcbangs',
+            url: '/pcbangs',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
@@ -188,7 +186,7 @@
 
     function readPcbangDetails(id) {
         $.ajax({
-            url: `api/pcbangs/${id}`,
+            url: `/pcbangs/${id}`,
             type: 'GET',
             success: function (data) {
                 $('#deletePcbangButton').attr('id', data.id);
@@ -222,7 +220,7 @@
         const pcbangMemo = $('#detailMemo').val();
 
         $.ajax({
-            url: `api/pcbangs/${id}`,
+            url: `/pcbangs/${id}`,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify({
@@ -249,7 +247,7 @@
     function deletePcbang(id) {
         if (confirm('정말로 삭제하시겠습니까?')) {
             $.ajax({
-                url: `api/pcbangs/${id}`,
+                url: `/pcbangs/${id}`,
                 type: 'DELETE',
                 success: function () {
                     alert('PC방이 성공적으로 삭제되었습니다.');
