@@ -29,6 +29,11 @@ public class SecurityConfig {
                         .permitAll()
                 )
 
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/**")
+                        .authenticated()
+                )
+
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
@@ -39,7 +44,6 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/")
-
                 )
 
                 .sessionManagement(sessionManagement -> sessionManagement
