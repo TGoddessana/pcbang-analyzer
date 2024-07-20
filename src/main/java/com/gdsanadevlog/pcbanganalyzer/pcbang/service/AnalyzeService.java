@@ -47,9 +47,8 @@ public class AnalyzeService {
 
 
 
-//    @Scheduled(cron = "0 0/30 * * * *")
+    @Scheduled(cron = "0 0/30 * * * *")
     @Async
-    @Scheduled(cron = "0/10 * * * * *")
     public void analyzePcbang() {
         System.out.println("Analyze PCBangs at " + LocalDateTime.now());
         List<Pcbang> pcbangs = pcbangRepository.findAll();
