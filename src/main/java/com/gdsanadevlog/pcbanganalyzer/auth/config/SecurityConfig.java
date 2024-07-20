@@ -62,12 +62,4 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails 이명박근혜 = User.withUsername("이명박근혜")
-//                .password(passwordEncoder().encode("1234"))
-//                .build();
-//        return new InMemoryUserDetailsManager(이명박근혜);
-//    }
 }
