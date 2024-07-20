@@ -14,11 +14,12 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
     @Override
     public void run(String...args) throws Exception {
-
-        adminService.registerUser(Admin.builder()
-                .name("admin")
-                .password("admin")
-                .build());
+        if(adminService.findByName("admin") == null) {
+            adminService.registerUser(Admin.builder()
+                    .name("admin")
+                    .password("admin")
+                    .build());
+        }
 
     }
 }
