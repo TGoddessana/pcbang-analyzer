@@ -18,30 +18,22 @@ public class AnalyzeHistoryController {
 
     @GetMapping("")
     public String index(Model model,
+                        @RequestParam(value = "pcbangName", required = false) String pcbangName,
                         @RequestParam(defaultValue = "0") int page,
                         @RequestParam(defaultValue = "10") int size) {
 
-        Page<AnalyzeHistoryReadDto> analyzeHistoryDtoPage = analyzeHistoryService
-                .listAnalyzeHistoriesPaginated(page, size);
+        Page<AnalyzeHistoryReadDto> analyzeHistoryDtoPage;
 
+        if (pcbangName == null || pcbangName.isEmpty()) {
+            analyzeHistoryDtoPage = analyzeHistoryService.listAllAnalyzeHistories(page, size);
+        } else {
+            analyzeHistoryDtoPage = analyzeHistoryService.searchAnalyzeHistoriesByPcbangName(pcbangName, page, size);
+        }
+
+        model.addAttribute("searchKeyword", pcbangName);
         model.addAttribute("analyzeHistories", analyzeHistoryDtoPage.getContent());
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", analyzeHistoryDtoPage.getTotalPages());
-
-        return "pages/index";
-    }
-
-    @GetMapping("search")
-    public String search(Model model,
-                         @RequestParam("pcbangName") String pcbangName,
-                         @RequestParam(defaultValue = "0") int page,
-                         @RequestParam(defaultValue = "10") int size) {
-
-        Page<AnalyzeHistoryReadDto> analyzeHistoryDtoPage = analyzeHistoryService
-                .searchAnalyzeHistoriesByPcbangName(pcbangName, page, size);
-
-        model.addAttribute("analyzeHistories", analyzeHistoryDtoPage.getContent());
-        model.addAttribute("currentPage", page);
+        model.addAttribute("size", size);
         model.addAttribute("totalPages", analyzeHistoryDtoPage.getTotalPages());
 
         return "pages/index";

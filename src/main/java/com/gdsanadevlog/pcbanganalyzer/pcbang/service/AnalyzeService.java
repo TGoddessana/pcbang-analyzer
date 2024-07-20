@@ -31,7 +31,7 @@ public class AnalyzeService {
     private final AnalyzeHistoryRepository analyzeHistoryRepository;
     private final PcbangRepository pcbangRepository;
 
-    public Page<AnalyzeHistoryReadDto> listAnalyzeHistoriesPaginated(int page, int size) {
+    public Page<AnalyzeHistoryReadDto> listAllAnalyzeHistories(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "analyzedAt"));
         Page<AnalyzeHistory> analyzeHistoryPage = analyzeHistoryRepository.findAll(pageable);
 
