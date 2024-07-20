@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-
 
 @Service
 @RequiredArgsConstructor
@@ -27,10 +28,20 @@ public class AnalyzeService {
     private final PcbangRepository pcbangRepository;
 
     public Page<AnalyzeHistoryReadDto> listAnalyzeHistoriesPaginated(int page, int size) {
-        Page<AnalyzeHistory> analyzeHistoryPage = analyzeHistoryRepository.findAll(PageRequest.of(page, size));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "analyzedAt"));
+        Page<AnalyzeHistory> analyzeHistoryPage = analyzeHistoryRepository.findAll(pageable);
 
         return analyzeHistoryPage.map(AnalyzeHistoryReadDto::fromEntity);
     }
+
+    public Page<AnalyzeHistoryReadDto> searchAnalyzeHistoriesByPcbangName(String pcbangName, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "analyzedAt"));
+        Page<AnalyzeHistory> analyzeHistoryPage = analyzeHistoryRepository.findByPcbangNameContainingIgnoreCase(pcbangName, pageable);
+
+        return analyzeHistoryPage.map(AnalyzeHistoryReadDto::fromEntity);
+    }
+
+
 
 //    @Scheduled(cron = "0 0/30 * * * *")
     @Async
