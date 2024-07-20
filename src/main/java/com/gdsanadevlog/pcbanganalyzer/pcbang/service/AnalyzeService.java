@@ -18,7 +18,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Service
 @RequiredArgsConstructor
@@ -51,9 +55,29 @@ public class AnalyzeService {
         List<Pcbang> pcbangs = pcbangRepository.findAll();
 
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+
+        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        List<Future<?>> futures = new ArrayList<>();
+
         for (Pcbang pcbang : pcbangs) {
-            AnalyzeHistory analyzeHistory = pcbang.analyze(now);
-            analyzeHistoryRepository.save(analyzeHistory);
+            Future<?> future = executor.submit(() -> {
+                System.out.println("Analyze PCBang " + pcbang.getName() + " at " + LocalDateTime.now());
+                AnalyzeHistory analyzeHistory = pcbang.analyze(now);
+                analyzeHistoryRepository.save(analyzeHistory);
+            });
+            futures.add(future);
         }
+
+       for (Future<?> future : futures) {
+            try {
+                future.get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        executor.shutdown();
     }
 }
