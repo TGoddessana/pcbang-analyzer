@@ -6,5 +6,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 
-public interface PcbangRepository extends JpaRepository<Pcbang, Long>, PagingAndSortingRepository<Pcbang,Long> {
+public interface PcbangRepository extends JpaRepository<Pcbang, Long> {
 }
