@@ -24,11 +24,20 @@
         <i class="fa fa-bars"></i>
     </button>
 
-    <!-- Topbar Search -->
-    <form th:action="@{/search}" method="get">
-        <input type="text" name="pcbangName" placeholder="Search by PCBang Name">
-        <button type="submit">Search</button>
+    <form th:action="@{/search}" method="get"
+          class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+        <div class="input-group">
+            <input type="text" name="pcbangName" class="form-control bg-light border-0 small"
+                   placeholder="PC방 이름으로 검색하세요..."
+                   aria-label="Search" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
+            </div>
+        </div>
     </form>
+
 
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
@@ -55,16 +64,16 @@
 <!-- End of Topbar -->
 
 <script>
-    $(document).ready(function() {
-        $('#logoutLink').on('click', function(event) {
+    $(document).ready(function () {
+        $('#logoutLink').on('click', function (event) {
             event.preventDefault();
             $.ajax({
                 url: '/logout',
                 type: 'POST',
-                success: function(response) {
+                success: function (response) {
                     window.location.href = '/';
                 },
-                error: function(error) {
+                error: function (error) {
                     console.log('Logout failed:', error);
                 }
             });
