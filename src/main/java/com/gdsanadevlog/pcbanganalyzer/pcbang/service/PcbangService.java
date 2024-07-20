@@ -1,9 +1,11 @@
 package com.gdsanadevlog.pcbanganalyzer.pcbang.service;
 
+import com.gdsanadevlog.pcbanganalyzer.pcbang.domain.AnalyzeHistory;
 import com.gdsanadevlog.pcbanganalyzer.pcbang.domain.Pcbang;
 import com.gdsanadevlog.pcbanganalyzer.pcbang.dto.PcbangCreateDto;
 import com.gdsanadevlog.pcbanganalyzer.pcbang.dto.PcbangReadDto;
 import com.gdsanadevlog.pcbanganalyzer.pcbang.dto.PcbangUpdateDto;
+import com.gdsanadevlog.pcbanganalyzer.pcbang.repository.AnalyzeHistoryRepository;
 import com.gdsanadevlog.pcbanganalyzer.pcbang.repository.PcbangRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -12,11 +14,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
 public class PcbangService {
     private final PcbangRepository pcbangRepository;
+    private final AnalyzeHistoryRepository analyzeHistoryRepository;
 
     public void savePcbang(PcbangCreateDto pcbangCreateDto) {
         pcbangRepository.save(pcbangCreateDto.toEntity());
@@ -54,6 +59,9 @@ public class PcbangService {
 
     public void deletePcbangById(Long id) {
         pcbangRepository.deleteById(id);
+
+        List<AnalyzeHistory> analyzeHistories = analyzeHistoryRepository.findByPcbangId(id);
+        analyzeHistoryRepository.deleteAll(analyzeHistories);
     }
 
 }
