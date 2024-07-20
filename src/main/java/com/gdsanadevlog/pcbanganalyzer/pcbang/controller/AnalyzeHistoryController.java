@@ -31,4 +31,19 @@ public class AnalyzeHistoryController {
         return "pages/index";
     }
 
+    @GetMapping("search")
+    public String search(Model model,
+                         @RequestParam("pcbangName") String pcbangName,
+                         @RequestParam(defaultValue = "0") int page,
+                         @RequestParam(defaultValue = "10") int size) {
+
+        Page<AnalyzeHistoryReadDto> analyzeHistoryDtoPage = analyzeHistoryService
+                .searchAnalyzeHistoriesByPcbangName(pcbangName, page, size);
+
+        model.addAttribute("analyzeHistories", analyzeHistoryDtoPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", analyzeHistoryDtoPage.getTotalPages());
+
+        return "pages/index";
+    }
 }
