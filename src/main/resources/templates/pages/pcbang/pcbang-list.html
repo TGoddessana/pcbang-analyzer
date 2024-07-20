@@ -220,7 +220,7 @@
         const pcbangMemo = $('#detailMemo').val();
 
         $.ajax({
-            url: `/pcbangs/${id}`,
+            url: `/api/pcbangs/${id}`,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify({
