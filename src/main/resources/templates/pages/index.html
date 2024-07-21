@@ -41,22 +41,27 @@
                 <nav aria-label="...">
                     <ul class="pagination justify-content-end mb-0">
                         <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled' : ''">
-                            <a class="page-link"
-                               th:href="@{/(page=${currentPage - 1}, size=${size}, pcbangName=${searchKeyword})}"
-                               tabindex="-1">Previous</a>
+                            <a class="page-link" th:href="@{/(page=${currentPage - 1}, size=${size}, pcbangName=${searchKeyword})}" tabindex="-1">Previous</a>
                         </li>
                         <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-                            th:classappend="${i == currentPage} ? 'active' : ''">
-                            <a class="page-link" th:href="@{/(page=${i}, size=${size}, pcbangName=${searchKeyword})}"
-                               th:text="${i + 1}">1</a>
+                            th:classappend="${i == currentPage} ? 'active' : ''"
+                            th:if="${i == 0 or i == totalPages - 1 or (i >= currentPage - 2 and i <= currentPage + 2) or (i < 5 and currentPage < 5) or (i > totalPages - 5 and currentPage > totalPages - 5)}">
+                            <a class="page-link" th:href="@{/(page=${i}, size=${size}, pcbangName=${searchKeyword})}" th:text="${i + 1}">1</a>
+                        </li>
+                        <li class="page-item disabled" th:if="${currentPage >= 5 && i == 5}">
+                            <span class="page-link">...</span>
+                        </li>
+                        <li class="page-item" th:if="${currentPage + 5 < totalPages - 1}">
+                            <span class="page-link">...</span>
                         </li>
                         <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled' : ''">
-                            <a class="page-link"
-                               th:href="@{/(page=${currentPage + 1}, size=${size}, pcbangName=${searchKeyword})}">Next</a>
+                            <a class="page-link" th:href="@{/(page=${currentPage + 1}, size=${size}, pcbangName=${searchKeyword})}">Next</a>
                         </li>
                     </ul>
                 </nav>
             </div>
+
+
 
         </div>
     </div>
