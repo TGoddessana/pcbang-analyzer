@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView
 
-from analyzer.forms import CityForm
+from analyzer.forms import CityCreateForm, CityUpdateForm, CityDeleteForm
 from analyzer.models import Pcbang, City
 
 
@@ -16,14 +16,28 @@ class CityListView(ListView):
     paginate_by = 10
 
     def post(self, request, *args, **kwargs):
-        form = CityForm(self.request.POST)
-        if form.is_valid():
-            form.save()
-        return super().get(self.request)
+        if "create_city" in request.POST:
+            create_form = CityCreateForm(request.POST)
+            if create_form.is_valid():
+                create_form.save()
+
+        if "update_city" in request.POST:
+            update_form = CityUpdateForm(request.POST)
+            if update_form.is_valid():
+                city = City.objects.get(pk=request.POST.get("city_id"))
+                city.name = update_form.cleaned_data["name"]
+                city.save()
+
+        elif "delete_city" in request.POST:
+            delete_form = CityDeleteForm(request.POST)
+            if delete_form.is_valid():
+                city = City.objects.get(pk=delete_form.cleaned_data["city_id"])
+                city.delete()
+
+        return self.get(request, *args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["form"] = CityForm()
         return context
 
 

@@ -7,44 +7,52 @@
             <p class="card-description">도시(구)를 추가합니다.</p>
             <form class="form-inline" method="post">
                 {% csrf_token %}
-
-                {% if form.errors %}
-                    <div class="alert alert-danger" role="alert">
-                        {% for field in form %}
-                            {% if field.errors %}
-                                <strong>{{ field.label }}</strong>
-                                {{ field.errors }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                {% endif %}
-
                 <div class="form-group">
                     <label for="subject"></label>
                     <input type="text" class="form-control" id="subject" name="name" placeholder="구로구">
                 </div>
-                <button type="submit" class="btn btn-gradient-primary mb-2">추가하기</button>
+                <button type="submit" name="create_city" class="btn btn-gradient-primary mb-2">추가하기</button>
             </form>
         </div>
     </div>
-
 
     <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">도시(구) 목록</h4>
-
                 <table class="table table-bordered">
                     <thead>
                     <tr>
                         <th>이름</th>
                         <th>연결된 매장 수</th>
+                        <th>수정</th>
+                        <th>삭제</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for city in city_list %}
                         <tr>
                             <td>{{ city.name }}</td>
+                            <td>{{ city.pcbang_set.count }}</td>
+                            <td>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="city_id" value="{{ city.id }}">
+                                    <label>
+                                        <input type="text" name="name" value="{{ city.name }}" class="form-control">
+                                    </label>
+                                    <button type="submit" name="update_city" class="btn btn-sm btn-primary">수정</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="city_id" value="{{ city.id }}">
+                                    <button type="submit" name="delete_city" class="btn btn-sm btn-danger"
+                                            onclick="return confirm('정말로 삭제하시겠습니까?');">삭제
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
