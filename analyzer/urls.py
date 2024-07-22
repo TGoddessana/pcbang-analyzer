@@ -1,6 +1,7 @@
 from django.urls import path
-from analyzer.views import PcbangListView
+from analyzer import views
 
 urlpatterns = [
-    path("pcbang-list", PcbangListView.as_view(), name="pcbang_list"),
+    path("", views.dashboard_index, name="dashboard_index"),
+    path("pcbang-list", views.PcbangListView.as_view(), name="pcbang_list"),
 ]
