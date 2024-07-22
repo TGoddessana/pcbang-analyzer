@@ -1,3 +1,5 @@
 from django.contrib import admin
+from analyzer.models import Pcbang, City
 
-# Register your models here.
+admin.site.register(Pcbang)
+admin.site.register(City)

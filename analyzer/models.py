@@ -4,6 +4,13 @@ from contextlib import closing
 from django.db import models
 
 
+class City(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Pcbang(models.Model):
     name = models.CharField(max_length=100, unique=True)
     address = models.CharField(max_length=100)
@@ -13,6 +20,7 @@ class Pcbang(models.Model):
     pc_spec = models.CharField(max_length=100)
     telecom = models.CharField(max_length=100)
     memo = models.TextField()
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
 
     @property
     def start_ip(self):
