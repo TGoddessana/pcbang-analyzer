@@ -1,12 +1,20 @@
 from django.shortcuts import render
 from django.views.generic import ListView
-
-from analyzer.forms import CityCreateForm, CityUpdateForm, CityDeleteForm
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from analyzer.forms import CityCreateForm, CityUpdateForm
 from analyzer.models import Pcbang, City
 
 
 def dashboard_index(request):
     return render(request, "analyzer/index.html")
+
+
+class CityCreateView(CreateView):
+    model = City
+    form_class = CityCreateForm
+    template_name = "analyzer/city-form.html"
+    success_url = reverse_lazy("city-list")
 
 
 class CityListView(ListView):
@@ -15,30 +23,18 @@ class CityListView(ListView):
     context_object_name = "city_list"
     paginate_by = 10
 
-    def post(self, request, *args, **kwargs):
-        if "create_city" in request.POST:
-            create_form = CityCreateForm(request.POST)
-            if create_form.is_valid():
-                create_form.save()
 
-        if "update_city" in request.POST:
-            update_form = CityUpdateForm(request.POST)
-            if update_form.is_valid():
-                city = City.objects.get(pk=request.POST.get("city_id"))
-                city.name = update_form.cleaned_data["name"]
-                city.save()
+class CityUpdateView(UpdateView):
+    model = City
+    form_class = CityUpdateForm
+    template_name = "analyzer/city-form.html"
+    success_url = reverse_lazy("city-list")
 
-        elif "delete_city" in request.POST:
-            delete_form = CityDeleteForm(request.POST)
-            if delete_form.is_valid():
-                city = City.objects.get(pk=delete_form.cleaned_data["city_id"])
-                city.delete()
 
-        return self.get(request, *args, **kwargs)
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+class CityDeleteView(DeleteView):
+    model = City
+    template_name = "analyzer/city-delete.html"
+    success_url = reverse_lazy("city-list")
 
 
 class PcbangListView(ListView):

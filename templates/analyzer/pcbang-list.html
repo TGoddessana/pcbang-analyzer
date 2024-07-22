@@ -1,4 +1,39 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+    <div class="card stretch-card">
+        <div class="card-body">
+            <h4 class="card-title">분석중인 매장 목록</h4>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>도시</th>
+                    <th>이름</th>
+                    <th>주소</th>
+                    <th>아이피 범위</th>
+                    <th>포트</th>
+                    <th>좌석 수</th>
+                    <th>사양</th>
+                    <th>통신사</th>
+                    <th>메모</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>서울</td>
+                    <td>서울PC방</td>
+                    <td>서울시 강남구</td>
+                    <td>14.123.125.1 ~ 14.123.125.100</td>
+                    <td>8080</td>
+                    <td>100</td>
+                    <td>i5 8GB 256GB</td>
+                    <td>SKT</td>
+                    <td>테스트</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

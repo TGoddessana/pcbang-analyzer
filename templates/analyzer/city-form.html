@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="col-lg-9 col-md-6 table-responsive">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        {% if form.instance.pk %}도시 수정{% else %}도시 추가{% endif %}
+                    </h4>
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="subject"></label>
+                            <input type="text" value="{{ form.instance.name }}"
+                                   class="form-control" id="subject" name="name" placeholder="구로구">
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            {% if form.instance.pk %}수정{% else %}추가{% endif %}
+                        </button>
+                        <a href="{% url 'city-list' %}" class="btn btn-secondary">취소</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
