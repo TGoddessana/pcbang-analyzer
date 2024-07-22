@@ -5,14 +5,14 @@
         <div class="col-lg-9 col-md-6 table-responsive">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">도시(구) 목록</h4>
-
-                    <!-- Create Form -->
-                    <form method="post" action="{% url 'city-create' %}">
-                        {% csrf_token %}
-                        {{ create_form.as_p }}
-                        <button type="submit" class="btn btn-primary">도시 추가</button>
-                    </form>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="card-title">도시 목록</h4>
+                        <form method="post" action="{% url 'city-create' %}" class="form-inline">
+                            {% csrf_token %}
+                            {{ create_form.as_p }}
+                            <button type="submit" class="btn btn-sm btn-primary">도시 추가</button>
+                        </form>
+                    </div>
 
                     <div class="table-responsive">
                         <table class="table table-bordered">
