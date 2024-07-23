@@ -42,15 +42,16 @@
                                     <td>{{ pcbang.memo }}</td>
                                     <td>{{ pcbang.city.name }}</td>
                                     <td>
-                                        <!-- Update Link -->
                                         <a href="{% url 'pcbang-update' pcbang.id %}"
                                            class="btn btn-warning btn-sm">수정</a>
-                                        <!-- Delete Form -->
                                         <form method="get" action="{% url 'pcbang-delete' pcbang.id %}"
                                               style="display:inline;">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-danger btn-sm">삭제</button>
                                         </form>
+                                        <a class="btn btn-info btn-sm" href="">
+                                            분석
+                                        </a>
                                     </td>
                                 </tr>
                             {% endfor %}
