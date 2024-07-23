@@ -2,7 +2,12 @@ from django.shortcuts import render
 from django.views.generic import ListView
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from analyzer.forms import CityCreateForm, CityUpdateForm
+from analyzer.forms import (
+    CityCreateForm,
+    CityUpdateForm,
+    PcbangCreateForm,
+    PcbangUpdateForm,
+)
 from analyzer.models import Pcbang, City
 
 
@@ -49,3 +54,28 @@ class PcbangListView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
+class PcbangCreateView(CreateView):
+    model = Pcbang
+    form_class = PcbangCreateForm
+    template_name = "analyzer/pcbang-form.html"
+    success_url = reverse_lazy("pcbang-list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["city_list"] = City.objects.all()
+        return context
+
+
+class PcbangUpdateView(UpdateView):
+    model = Pcbang
+    form_class = PcbangUpdateForm
+    template_name = "analyzer/pcbang-form.html"
+    success_url = reverse_lazy("pcbang-list")
+
+
+class PcbangDeleteView(DeleteView):
+    model = Pcbang
+    template_name = "analyzer/pcbang-delete.html"
+    success_url = reverse_lazy("pcbang-list")

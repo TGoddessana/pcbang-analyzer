@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="col-lg-9 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4>{% if form.instance.pk %}PC방 수정{% else %}PC방 추가{% endif %}</h4>
+                    <form method="post">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                {% for error in form.non_field_errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        {% for field in form %}
+                            {% if field.errors %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                    <strong>{{ field.label }}</strong>: {{ field.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                        <input type="text" name="name" class="form-control mb-3" placeholder="이름"
+                               value="{{ form.instance.name.value }}" required>
+                        <input type="text" name="address" class="form-control mb-3" placeholder="주소"
+                               value="{{ form.instance.address.value }}">
+                        <input type="text" name="ip" class="form-control mb-3" placeholder="IP"
+                               value="{{ form.instance.ip.value }}">
+                        <input type="text" name="port" class="form-control mb-3" placeholder="포트"
+                               value="{{ form.instance.port.value }}">
+                        <input type="number" name="seat_count" class="form-control mb-3" placeholder="좌석 수"
+                               value="{{ form.instance.seat_count.value }}">
+                        <input type="text" name="pc_spec" class="form-control mb-3" placeholder="PC 사양"
+                               value="{{ form.instance.pc_spec.value }}">
+                        <input type="text" name="telecom" class="form-control mb-3" placeholder="통신사"
+                               value="{{ form.instance.telecom.value }}">
+                        <input type="text" name="memo" class="form-control mb-3" placeholder="메모"
+                               value="{{ form.instance.memo.value }}">
+                        <select name="city" class="form-control mb-3">
+                            <option value="">도시 선택</option>
+                            {% if form.instance.city %}
+                                <option value="{{ form.instance.city.pk }}"
+                                        selected>{{ form.instance.city.name }}</option>
+                            {% endif %}
+                            {% for city in city_list %}
+                                <option value="{{ city.pk }}">{{ city.name }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <button type="submit" class="btn btn-primary">
+                            {% if form.instance.pk %}수정{% else %}추가{% endif %}
+                        </button>
+                        <a href="{% url 'city-list' %}" class="btn btn-secondary">취소</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

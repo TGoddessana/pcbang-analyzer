@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+
     <div class="container-fluid">
         <div class="col-lg-9 col-md-6 table-responsive">
             <div class="card">
@@ -10,6 +11,15 @@
                     </h4>
                     <form method="post" action="">
                         {% csrf_token %}
+
+                        {% if form.errors %}
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <div class="alert alert-danger">{{ error }}</div>
+                                {% endfor %}
+                            {% endfor %}
+                        {% endif %}
+
                         <div class="form-group">
                             <label for="subject"></label>
                             <input type="text" value="{{ form.instance.name }}"

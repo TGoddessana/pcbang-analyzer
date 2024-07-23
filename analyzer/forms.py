@@ -1,6 +1,6 @@
 from django import forms
 
-from analyzer.models import City
+from analyzer.models import City, Pcbang
 
 
 class CityCreateForm(forms.ModelForm):
@@ -17,3 +17,21 @@ class CityUpdateForm(forms.ModelForm):
 
 class CityDeleteForm(forms.Form):
     city_id = forms.IntegerField(widget=forms.HiddenInput())
+
+
+class PcbangCreateForm(forms.ModelForm):
+    class Meta:
+        model = Pcbang
+        fields = "__all__"
+
+
+class PcbangUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Pcbang
+        fields = "__all__"
+
+
+class PcbangDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Pcbang
+        fields = []

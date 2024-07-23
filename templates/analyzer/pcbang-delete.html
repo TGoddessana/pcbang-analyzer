@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="col-lg-9 col-md-6 table-responsive">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        매장 삭제
+                    </h4>
+                    <form method="post">
+                        {% csrf_token %}
+                        <p>정말 삭제하시겠습니까?</p>
+                        <button type="submit" class="btn btn-danger">삭제</button>
+                        <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

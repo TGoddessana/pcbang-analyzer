@@ -5,21 +5,21 @@ from django.db import models
 
 
 class City(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField("도시 이름", max_length=100, unique=True)
 
     def __str__(self):
         return self.name
 
 
 class Pcbang(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    address = models.CharField(max_length=100)
-    ip = models.GenericIPAddressField()
-    port = models.IntegerField(default=5040)
-    seat_count = models.IntegerField()
-    pc_spec = models.CharField(max_length=100)
-    telecom = models.CharField(max_length=100)
-    memo = models.TextField()
+    name = models.CharField("매장명", max_length=100, unique=True)
+    address = models.CharField("주소", max_length=100)
+    ip = models.GenericIPAddressField("IP")
+    port = models.IntegerField("포트", default=5040)
+    seat_count = models.IntegerField("좌석수")
+    pc_spec = models.CharField("PC 사양", max_length=100)
+    telecom = models.CharField("통신사", max_length=100)
+    memo = models.TextField("메모", blank=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
 
     @property
