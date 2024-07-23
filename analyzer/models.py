@@ -1,5 +1,4 @@
 import socket
-from contextlib import closing
 
 from django.db import models
 
@@ -31,14 +30,26 @@ class Pcbang(models.Model):
         ip = self.ip.split(".")
         return f"{ip[0]}.{ip[1]}.{ip[2]}.{self.seat_count}"
 
-    def analyze_ip_accessible(self):
+    def analyze_ip_accessible(self, insert=False):
+        open_count = 0
+        close_count = 0
+
         for ip in self._get_ip_range():
-            with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
-                sock.settimeout(1)
-                if sock.connect_ex((ip, self.port)) == 0:
-                    print(f"Computer at {ip} is ON.")
-                else:
-                    print(f"Computer at {ip} is OFF or not reachable.")
+            try:
+                connection = socket.create_connection((ip, self.port), timeout=0.05)
+                open_count += 1
+                connection.close()
+            except socket.error:
+                close_count += 1
+
+        if insert:
+            AnalyzeHistory.objects.create(
+                open_count=open_count,
+                close_count=close_count,
+                pcbang=self,
+            )
+
+        return open_count, close_count
 
     def _get_ip_range(self):
         return [
@@ -48,3 +59,17 @@ class Pcbang(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class AnalyzeHistory(models.Model):
+    open_count = models.IntegerField("켜져 있는 좌석 수")
+    close_count = models.IntegerField("꺼져 있는 좌석 수")
+    analyzed_at = models.DateTimeField("분석일시", auto_now_add=True)
+
+    pcbang = models.ForeignKey(Pcbang, on_delete=models.CASCADE)
+
+    def get_open_rate(self):
+        return self.open_count / (self.open_count + self.close_count) * 100
+
+    def __str__(self):
+        return f"{self.pcbang.name} - {self.analyzed_at}"
