@@ -42,6 +42,18 @@ class CityDeleteView(DeleteView):
     success_url = reverse_lazy("city-list")
 
 
+class PcbangCreateView(CreateView):
+    model = Pcbang
+    form_class = PcbangCreateForm
+    template_name = "analyzer/pcbang-form.html"
+    success_url = reverse_lazy("pcbang-list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["city_list"] = City.objects.all()
+        return context
+
+
 class PcbangListView(ListView):
     model = Pcbang
     template_name = "analyzer/pcbang-list.html"
@@ -53,18 +65,6 @@ class PcbangListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        return context
-
-
-class PcbangCreateView(CreateView):
-    model = Pcbang
-    form_class = PcbangCreateForm
-    template_name = "analyzer/pcbang-form.html"
-    success_url = reverse_lazy("pcbang-list")
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["city_list"] = City.objects.all()
         return context
 
 
