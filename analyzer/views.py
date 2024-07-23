@@ -74,6 +74,11 @@ class PcbangUpdateView(UpdateView):
     template_name = "analyzer/pcbang-form.html"
     success_url = reverse_lazy("pcbang-list")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["city_list"] = City.objects.all()
+        return context
+
 
 class PcbangDeleteView(DeleteView):
     model = Pcbang

@@ -31,21 +31,21 @@
                         {% endfor %}
 
                         <input type="text" name="name" class="form-control mb-3" placeholder="이름"
-                               value="{{ form.instance.name.value }}" required>
+                               value="{{ form.instance.name }}" required>
                         <input type="text" name="address" class="form-control mb-3" placeholder="주소"
-                               value="{{ form.instance.address.value }}">
+                               value="{{ form.instance.address }}">
                         <input type="text" name="ip" class="form-control mb-3" placeholder="IP"
-                               value="{{ form.instance.ip.value }}">
+                               value="{{ form.instance.ip }}">
                         <input type="text" name="port" class="form-control mb-3" placeholder="포트"
-                               value="{{ form.instance.port.value }}">
+                               value="{{ form.instance.port }}">
                         <input type="number" name="seat_count" class="form-control mb-3" placeholder="좌석 수"
-                               value="{{ form.instance.seat_count.value }}">
+                               value="{{ form.instance.seat_count }}">
                         <input type="text" name="pc_spec" class="form-control mb-3" placeholder="PC 사양"
-                               value="{{ form.instance.pc_spec.value }}">
+                               value="{{ form.instance.pc_spec }}">
                         <input type="text" name="telecom" class="form-control mb-3" placeholder="통신사"
-                               value="{{ form.instance.telecom.value }}">
+                               value="{{ form.instance.telecom }}">
                         <input type="text" name="memo" class="form-control mb-3" placeholder="메모"
-                               value="{{ form.instance.memo.value }}">
+                               value="{{ form.instance.memo }}">
                         <select name="city" class="form-control mb-3">
                             <option value="">도시 선택</option>
                             {% if form.instance.city %}
