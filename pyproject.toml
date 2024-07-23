@@ -10,6 +10,8 @@ python = "^3.12"
 django = "^5.0.7"
 black = "^24.4.2"
 bpython = "^0.24"
+celery = "^5.4.0"
+redis = "^5.0.7"
 
 
 [build-system]

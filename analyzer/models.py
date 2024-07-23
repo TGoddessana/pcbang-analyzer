@@ -30,7 +30,7 @@ class Pcbang(models.Model):
         ip = self.ip.split(".")
         return f"{ip[0]}.{ip[1]}.{ip[2]}.{self.seat_count}"
 
-    def analyze_ip_accessible(self, insert=False):
+    def analyze_ip_accessible(self, analyzed_at, insert=False):
         open_count = 0
         close_count = 0
 
@@ -47,6 +47,7 @@ class Pcbang(models.Model):
                 open_count=open_count,
                 close_count=close_count,
                 pcbang=self,
+                analyzed_at=analyzed_at,
             )
 
         return open_count, close_count
@@ -64,7 +65,7 @@ class Pcbang(models.Model):
 class AnalyzeHistory(models.Model):
     open_count = models.IntegerField("켜져 있는 좌석 수")
     close_count = models.IntegerField("꺼져 있는 좌석 수")
-    analyzed_at = models.DateTimeField("분석일시", auto_now_add=True)
+    analyzed_at = models.DateTimeField("분석일시")
 
     pcbang = models.ForeignKey(Pcbang, on_delete=models.CASCADE)
 
