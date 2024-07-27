@@ -132,7 +132,6 @@ def analyze_history_view(request):
 
     grouped_histories = {}
     for item in page_obj:
-        print(item["minute"])
         dt = datetime(
             year=item["minute"].year,
             month=item["minute"].month,
@@ -146,7 +145,7 @@ def analyze_history_view(request):
             analyzed_at__day=dt.day,
             analyzed_at__hour=dt.hour,
             analyzed_at__minute=dt.minute,
-        ).order_by("-analyzed_at")
+        )
         grouped_histories[dt] = histories
 
     context = {"page_obj": page_obj, "grouped_histories": grouped_histories}
