@@ -130,8 +130,24 @@ class AnalyzeHistoryListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        queryset = AnalyzeHistory.objects.get_queryset().values("minute")
+        city_name = self.request.GET.get("city_name", "")
+        pcbang_name = self.request.GET.get("pcbang_name", "")
+        queryset = (
+            AnalyzeHistory.objects.filter(
+                pcbang__city__name__icontains=city_name,
+                pcbang__name__icontains=pcbang_name,
+            )
+            .annotate(minute=TruncMinute("analyzed_at"))
+            .distinct()
+            .order_by("-minute")
+        )
         return queryset
+
+    def get_city_list(self):
+        return City.objects.values_list("name", flat=True).distinct()
+
+    def get_pcbang_list(self):
+        return Pcbang.objects.values_list("name", flat=True).distinct()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -139,23 +155,21 @@ class AnalyzeHistoryListView(ListView):
 
         grouped_histories = {}
         for item in page_obj:
-            dt = datetime(
-                year=item["minute"].year,
-                month=item["minute"].month,
-                day=item["minute"].day,
-                hour=item["minute"].hour,
-                minute=item["minute"].minute,
-            )
+            dt = item.minute
             histories = AnalyzeHistory.objects.filter(
                 analyzed_at__year=dt.year,
                 analyzed_at__month=dt.month,
                 analyzed_at__day=dt.day,
                 analyzed_at__hour=dt.hour,
                 analyzed_at__minute=dt.minute,
+                pcbang__city__name__icontains=self.request.GET.get("city_name", ""),
+                pcbang__name__icontains=self.request.GET.get("pcbang_name", ""),
             )
             grouped_histories[dt] = histories
 
         context["grouped_histories"] = grouped_histories
-        context["pcbang_list"] = Pcbang.objects.all()
-        context["city_list"] = City.objects.all()
+        context["city_list"] = self.get_city_list()
+        context["pcbang_list"] = self.get_pcbang_list()
+        context["city_name"] = self.request.GET.get("city_name", "")
+        context["pcbang_name"] = self.request.GET.get("pcbang_name", "")
         return context
