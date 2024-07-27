@@ -8,7 +8,7 @@ from analyzer.forms import (
     PcbangCreateForm,
     PcbangUpdateForm,
 )
-from analyzer.models import Pcbang, City
+from analyzer.models import Pcbang, City, AnalyzeHistory
 
 
 def dashboard_index(request):
@@ -84,3 +84,10 @@ class PcbangDeleteView(DeleteView):
     model = Pcbang
     template_name = "analyzer/pcbang-delete.html"
     success_url = reverse_lazy("pcbang-list")
+
+
+class AnalyzeHistoryListView(ListView):
+    model = AnalyzeHistory
+    template_name = "analyzer/analyze-history-list.html"
+    context_object_name = "history_list"
+    paginate_by = 10

@@ -10,13 +10,18 @@ urlpatterns = [
     path("pcbang/create/", views.PcbangCreateView.as_view(), name="pcbang-create"),
     path("pcbang-list", views.PcbangListView.as_view(), name="pcbang-list"),
     path(
-        "pcbang/update/<int:pk>/",
+        "pcbang-update/<int:pk>/",
         views.PcbangUpdateView.as_view(),
         name="pcbang-update",
     ),
     path(
-        "pcbang/delete/<int:pk>/",
+        "pcbang-delete/<int:pk>/",
         views.PcbangDeleteView.as_view(),
         name="pcbang-delete",
+    ),
+    path(
+        "analyze-history-list",
+        views.AnalyzeHistoryListView.as_view(),
+        name="analyze-history-list",
     ),
 ]

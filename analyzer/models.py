@@ -69,7 +69,8 @@ class AnalyzeHistory(models.Model):
 
     pcbang = models.ForeignKey(Pcbang, on_delete=models.CASCADE)
 
-    def get_open_rate(self):
+    @property
+    def open_rate(self):
         return self.open_count / (self.open_count + self.close_count) * 100
 
     def __str__(self):
