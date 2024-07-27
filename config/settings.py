@@ -1,6 +1,7 @@
 import os
 from datetime import timedelta
 from pathlib import Path
+from celery.schedules import crontab
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -89,13 +90,18 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CELERY_BROKER_URL = "redis://localhost:6379/0"
+
 CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+
 CELERY_ACCEPT_CONTENT = ["json"]
+
 CELERY_TASK_SERIALIZER = "json"
+
 CELERY_RESULT_SERIALIZER = "json"
+
 CELERY_TIMEZONE = "Asia/Seoul"
 
-from celery.schedules import crontab
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 CELERY_BEAT_SCHEDULE = {
     "analyze-ip-every-30-minutes": {
