@@ -123,30 +123,39 @@ class PcbangDeleteView(DeleteView):
     success_url = reverse_lazy("pcbang-list")
 
 
-def analyze_history_view(request):
-    unique_datetimes = AnalyzeHistory.objects.get_queryset().values("minute")
+class AnalyzeHistoryListView(ListView):
+    model = AnalyzeHistory
+    template_name = "analyzer/analyze-history-list.html"
+    context_object_name = "grouped_histories"
+    paginate_by = 10
 
-    paginator = Paginator(unique_datetimes, 10)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    def get_queryset(self):
+        queryset = AnalyzeHistory.objects.get_queryset().values("minute")
+        return queryset
 
-    grouped_histories = {}
-    for item in page_obj:
-        dt = datetime(
-            year=item["minute"].year,
-            month=item["minute"].month,
-            day=item["minute"].day,
-            hour=item["minute"].hour,
-            minute=item["minute"].minute,
-        )
-        histories = AnalyzeHistory.objects.filter(
-            analyzed_at__year=dt.year,
-            analyzed_at__month=dt.month,
-            analyzed_at__day=dt.day,
-            analyzed_at__hour=dt.hour,
-            analyzed_at__minute=dt.minute,
-        )
-        grouped_histories[dt] = histories
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        page_obj = context["page_obj"]
 
-    context = {"page_obj": page_obj, "grouped_histories": grouped_histories}
-    return render(request, "analyzer/analyze-history-list.html", context)
+        grouped_histories = {}
+        for item in page_obj:
+            dt = datetime(
+                year=item["minute"].year,
+                month=item["minute"].month,
+                day=item["minute"].day,
+                hour=item["minute"].hour,
+                minute=item["minute"].minute,
+            )
+            histories = AnalyzeHistory.objects.filter(
+                analyzed_at__year=dt.year,
+                analyzed_at__month=dt.month,
+                analyzed_at__day=dt.day,
+                analyzed_at__hour=dt.hour,
+                analyzed_at__minute=dt.minute,
+            )
+            grouped_histories[dt] = histories
+
+        context["grouped_histories"] = grouped_histories
+        context["pcbang_list"] = Pcbang.objects.all()
+        context["city_list"] = City.objects.all()
+        return context

@@ -21,7 +21,7 @@ urlpatterns = [
     ),
     path(
         "analyze-history-list",
-        views.analyze_history_view,
+        views.AnalyzeHistoryListView.as_view(),
         name="analyze-history-list",
     ),
 ]
