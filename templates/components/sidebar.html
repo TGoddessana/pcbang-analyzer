@@ -26,24 +26,9 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false"
-                   aria-controls="ui-basic">
-                    <span class="menu-title">매장 분석기록</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="ui-basic">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'analyze-history-list' %}">시간대별 조회</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">매장별 조회</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">도시별 조회</a>
-                        </li>
-                    </ul>
-                </div>
+                    <span class="menu-title">
+                        <a class="nav-link" href="{% url 'analyze-history-list' %}">매장 분석기록</a>
+                    </span>
             </li>
 
         </ul>
