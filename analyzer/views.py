@@ -25,12 +25,36 @@ def dashboard_index(request):
     pcbang_list = Pcbang.objects.all()
     pcbang_count = Pcbang.objects.count()
 
+    recent_history = AnalyzeHistory.objects.first()
+    if recent_history:
+        dt = datetime(
+            year=recent_history.year.year,
+            month=recent_history.month.month,
+            day=recent_history.day.day,
+            hour=recent_history.hour.hour,
+            minute=recent_history.minute.minute,
+        )
+        recent_histories = AnalyzeHistory.objects.filter(
+            analyzed_at__year=dt.year,
+            analyzed_at__month=dt.month,
+            analyzed_at__day=dt.day,
+            analyzed_at__hour=dt.hour,
+            analyzed_at__minute=dt.minute,
+        )
+        highest_open_rate_history = max(recent_histories, key=lambda h: h.open_rate)
+    else:
+        recent_histories = None
+        highest_open_rate_history = None
+
     return render(
         request,
         "analyzer/index.html",
         {
             "pcbang_list": pcbang_list,
             "pcbang_count": pcbang_count,
+            "highest_open_rate_history": highest_open_rate_history,
+            "recent_history_analyzed_at": recent_history.analyzed_at,
+            "recent_histories": recent_histories,
         },
     )
 
@@ -107,7 +131,9 @@ class PcbangDeleteView(DeleteView):
 
 
 def analyze_history_view(request):
-    unique_datetimes = AnalyzeHistory.objects.get_datetimes()
+    unique_datetimes = AnalyzeHistory.objects.get_queryset().values(
+        "year", "month", "day", "hour", "minute"
+    )
 
     paginator = Paginator(unique_datetimes, 10)
     page_number = request.GET.get("page")

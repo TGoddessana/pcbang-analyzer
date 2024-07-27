@@ -27,17 +27,21 @@
                             <h4 class="font-weight-normal mb-3">가동률이 가장 높은 매장
                                 <i class="mdi mdi-chart-line mdi-24px float-end"></i>
                             </h4>
-                            <h2 class="mb-5">루미너스 PC방</h2>
+                            <h2 class="mb-5">
+                                {{ highest_open_rate_history.pcbang.name }}
+                            </h2>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 stretch-card grid-margin">
                     <div class="card bg-gradient-success card-img-holder text-white">
                         <div class="card-body">
-                            <h4 class="font-weight-normal mb-3">포트 추적에 실패한 매장들
+                            <h4 class="font-weight-normal mb-3">마지막 분석 시간
                                 <i class="mdi mdi-diamond mdi-24px float-end"></i>
                             </h4>
-                            <h2 class="mb-5">2개</h2>
+                            <h2 class="mb-5">
+                                {{ recent_history_analyzed_at|date:"Y년 m월 d일  H시 i분" }}
+                            </h2>
                         </div>
                     </div>
                 </div>
@@ -87,88 +91,28 @@
                         <div class="card-body">
                             <h4 class="card-title">최근 분석 결과</h4>
                             <div class="table-responsive">
-                                <table class="table">
+                                <table class="table table-bordered">
                                     <thead>
                                     <tr>
-                                        <th> #</th>
-                                        <th> Name</th>
-                                        <th> Due Date</th>
-                                        <th> Progress</th>
+                                        <th>매장 이름</th>
+                                        <th>열려있는 좌석 수</th>
+                                        <th>닫혀있는 좌석 수</th>
+                                        <th>가동률</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td> 1</td>
-                                        <td> Herman Beck</td>
-                                        <td> May 15, 2015</td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-gradient-success" role="progressbar"
-                                                     style="width: 25%" aria-valuenow="25" aria-valuemin="0"
-                                                     aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td> 2</td>
-                                        <td> Messsy Adam</td>
-                                        <td> Jul 01, 2015</td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-gradient-danger" role="progressbar"
-                                                     style="width: 75%" aria-valuenow="75" aria-valuemin="0"
-                                                     aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td> 3</td>
-                                        <td> John Richards</td>
-                                        <td> Apr 12, 2015</td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-gradient-warning" role="progressbar"
-                                                     style="width: 90%" aria-valuenow="90" aria-valuemin="0"
-                                                     aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td> 4</td>
-                                        <td> Peter Meggik</td>
-                                        <td> May 15, 2015</td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-gradient-primary" role="progressbar"
-                                                     style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                     aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td> 5</td>
-                                        <td> Edward</td>
-                                        <td> May 03, 2015</td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-gradient-danger" role="progressbar"
-                                                     style="width: 35%" aria-valuenow="35" aria-valuemin="0"
-                                                     aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td> 5</td>
-                                        <td> Ronald</td>
-                                        <td> Jun 05, 2015</td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-gradient-info" role="progressbar"
-                                                     style="width: 65%" aria-valuenow="65" aria-valuemin="0"
-                                                     aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    {% for history in recent_histories %}
+                                        <tr>
+                                            <td>{{ history.pcbang.name }}</td>
+                                            <td>{{ history.open_count }}</td>
+                                            <td>{{ history.close_count }}</td>
+                                            <td>{{ history.open_rate|stringformat:".1f" }}%</td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="4">데이터가 없습니다.</td>
+                                        </tr>
+                                    {% endfor %}
                                     </tbody>
                                 </table>
                             </div>

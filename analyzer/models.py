@@ -28,6 +28,9 @@ class Pcbang(models.Model):
     memo = models.TextField("메모", blank=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
 
+    def get_last_analysis(self):
+        return self.analyzehistory_set.first()
+
     @property
     def start_ip(self):
         return self.ip
@@ -71,19 +74,19 @@ class Pcbang(models.Model):
 
 class AnalyzeHistory(models.Model):
     class _Manager(models.Manager):
-        def get_queryset(self):
-            return super().get_queryset().select_related("pcbang")
 
-        def get_datetimes(self):
+        def get_queryset(self):
             return (
-                AnalyzeHistory.objects.annotate(
+                super()
+                .get_queryset()
+                .annotate(
                     year=TruncYear("analyzed_at"),
                     month=TruncMonth("analyzed_at"),
                     day=TruncDay("analyzed_at"),
                     hour=TruncHour("analyzed_at"),
                     minute=TruncMinute("analyzed_at"),
                 )
-                .values("year", "month", "day", "hour", "minute")
+                .select_related("pcbang")
                 .distinct()
                 .order_by("-year", "-month", "-day", "-hour", "-minute")
             )
