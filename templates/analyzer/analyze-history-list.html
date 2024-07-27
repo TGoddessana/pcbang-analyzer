@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+
     <div class="container-fluid">
         <div class="col-lg-12 col-md-6 table-responsive">
             <div class="card">
@@ -8,37 +9,36 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="card-title">매장 분석 내역</h4>
                     </div>
-
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>분석일시</th>
-                                <th>매장 이름</th>
-                                <th>열려있는 좌석 수</th>
-                                <th>닫혀있는 좌석 수</th>
-                                <th>가동률</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for history in history_list %}
+                    {% for datetime, histories in grouped_histories.items %}
+                        <h5>{{ datetime|date:"Y-m-d H:i" }}</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
                                 <tr>
-                                    <td>{{ history.analyzed_at|date:'Y/m/d H:i' }}</td>
-                                    <td>{{ history.pcbang.name }}</td>
-                                    <td>{{ history.open_count }}</td>
-                                    <td>{{ history.close_count }}</td>
-                                    <td>{{ history.open_rate|stringformat:".1f" }}%</td>
+                                    <th>매장 이름</th>
+                                    <th>열려있는 좌석 수</th>
+                                    <th>닫혀있는 좌석 수</th>
+                                    <th>가동률</th>
                                 </tr>
-                            {% empty %}
-                                <tr>
-                                    <td colspan="4">데이터가 없습니다.</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                {% for history in histories %}
+                                    <tr>
+                                        <td>{{ history.pcbang.name }}</td>
+                                        <td>{{ history.open_count }}</td>
+                                        <td>{{ history.close_count }}</td>
+                                        <td>{{ history.open_rate|stringformat:".1f" }}%</td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="4">데이터가 없습니다.</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endfor %}
 
-                    <!-- Pagination Controls -->
                     <nav aria-label="Page navigation" class="d-flex justify-content-end mt-3">
                         <ul class="pagination">
                             {% if page_obj.has_previous %}
@@ -55,21 +55,21 @@
                                 </li>
                             {% else %}
                                 <li class="page-item disabled">
-                                    <span class="page-link" aria-label="First">
-                                        <span aria-hidden="true">&laquo;&laquo;</span>
-                                    </span>
+                                                            <span class="page-link" aria-label="First">
+                                                                <span aria-hidden="true">&laquo;&laquo;</span>
+                                                            </span>
                                 </li>
                                 <li class="page-item disabled">
-                                    <span class="page-link" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </span>
+                                                            <span class="page-link" aria-label="Previous">
+                                                                <span aria-hidden="true">&laquo;</span>
+                                                            </span>
                                 </li>
                             {% endif %}
 
                             <li class="page-item disabled">
-                                <span class="page-link">
-                                    페이지 {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
-                                </span>
+                                                        <span class="page-link">
+                                                            페이지 {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+                                                        </span>
                             </li>
 
                             {% if page_obj.has_next %}
@@ -86,14 +86,14 @@
                                 </li>
                             {% else %}
                                 <li class="page-item disabled">
-                                    <span class="page-link" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </span>
+                                                            <span class="page-link" aria-label="Next">
+                                                                <span aria-hidden="true">&raquo;</span>
+                                                            </span>
                                 </li>
                                 <li class="page-item disabled">
-                                    <span class="page-link" aria-label="Last">
-                                        <span aria-hidden="true">&raquo;&raquo;</span>
-                                    </span>
+                                                            <span class="page-link" aria-label="Last">
+                                                                <span aria-hidden="true">&raquo;&raquo;</span>
+                                                            </span>
                                 </li>
                             {% endif %}
                         </ul>

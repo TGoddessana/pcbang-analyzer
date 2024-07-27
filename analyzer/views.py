@@ -1,3 +1,13 @@
+from datetime import datetime
+from datetime import datetime
+from django.core.paginator import Paginator
+from django.db.models.functions import (
+    TruncYear,
+    TruncMonth,
+    TruncDay,
+    TruncHour,
+    TruncMinute,
+)
 from django.shortcuts import render
 from django.views.generic import ListView
 from django.urls import reverse_lazy
@@ -12,7 +22,17 @@ from analyzer.models import Pcbang, City, AnalyzeHistory
 
 
 def dashboard_index(request):
-    return render(request, "analyzer/index.html")
+    pcbang_list = Pcbang.objects.all()
+    pcbang_count = Pcbang.objects.count()
+
+    return render(
+        request,
+        "analyzer/index.html",
+        {
+            "pcbang_list": pcbang_list,
+            "pcbang_count": pcbang_count,
+        },
+    )
 
 
 class CityCreateView(CreateView):
@@ -86,8 +106,30 @@ class PcbangDeleteView(DeleteView):
     success_url = reverse_lazy("pcbang-list")
 
 
-class AnalyzeHistoryListView(ListView):
-    model = AnalyzeHistory
-    template_name = "analyzer/analyze-history-list.html"
-    context_object_name = "history_list"
-    paginate_by = 10
+def analyze_history_view(request):
+    unique_datetimes = AnalyzeHistory.objects.get_datetimes()
+
+    paginator = Paginator(unique_datetimes, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    grouped_histories = {}
+    for item in page_obj:
+        dt = datetime(
+            year=item["year"].year,
+            month=item["month"].month,
+            day=item["day"].day,
+            hour=item["hour"].hour,
+            minute=item["minute"].minute,
+        )
+        histories = AnalyzeHistory.objects.filter(
+            analyzed_at__year=dt.year,
+            analyzed_at__month=dt.month,
+            analyzed_at__day=dt.day,
+            analyzed_at__hour=dt.hour,
+            analyzed_at__minute=dt.minute,
+        ).order_by("-analyzed_at")
+        grouped_histories[dt] = histories
+
+    context = {"page_obj": page_obj, "grouped_histories": grouped_histories}
+    return render(request, "analyzer/analyze-history-list.html", context)

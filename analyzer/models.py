@@ -1,6 +1,13 @@
 import socket
 
 from django.db import models
+from django.db.models.functions import (
+    TruncYear,
+    TruncMonth,
+    TruncDay,
+    TruncHour,
+    TruncMinute,
+)
 
 
 class City(models.Model):
@@ -63,11 +70,33 @@ class Pcbang(models.Model):
 
 
 class AnalyzeHistory(models.Model):
+    class _Manager(models.Manager):
+        def get_queryset(self):
+            return super().get_queryset().select_related("pcbang")
+
+        def get_datetimes(self):
+            return (
+                AnalyzeHistory.objects.annotate(
+                    year=TruncYear("analyzed_at"),
+                    month=TruncMonth("analyzed_at"),
+                    day=TruncDay("analyzed_at"),
+                    hour=TruncHour("analyzed_at"),
+                    minute=TruncMinute("analyzed_at"),
+                )
+                .values("year", "month", "day", "hour", "minute")
+                .distinct()
+                .order_by("-year", "-month", "-day", "-hour", "-minute")
+            )
+
     open_count = models.IntegerField("켜져 있는 좌석 수")
     close_count = models.IntegerField("꺼져 있는 좌석 수")
     analyzed_at = models.DateTimeField("분석일시")
-
     pcbang = models.ForeignKey(Pcbang, on_delete=models.CASCADE)
+
+    objects = _Manager()
+
+    class Meta:
+        ordering = ["-analyzed_at"]
 
     @property
     def open_rate(self):
