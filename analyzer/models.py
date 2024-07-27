@@ -80,15 +80,11 @@ class AnalyzeHistory(models.Model):
                 super()
                 .get_queryset()
                 .annotate(
-                    year=TruncYear("analyzed_at"),
-                    month=TruncMonth("analyzed_at"),
-                    day=TruncDay("analyzed_at"),
-                    hour=TruncHour("analyzed_at"),
                     minute=TruncMinute("analyzed_at"),
                 )
                 .select_related("pcbang")
                 .distinct()
-                .order_by("-year", "-month", "-day", "-hour", "-minute")
+                .order_by("-minute")
             )
 
     open_count = models.IntegerField("켜져 있는 좌석 수")

@@ -27,19 +27,12 @@ def dashboard_index(request):
 
     recent_history = AnalyzeHistory.objects.first()
     if recent_history:
-        dt = datetime(
-            year=recent_history.year.year,
-            month=recent_history.month.month,
-            day=recent_history.day.day,
-            hour=recent_history.hour.hour,
-            minute=recent_history.minute.minute,
-        )
         recent_histories = AnalyzeHistory.objects.filter(
-            analyzed_at__year=dt.year,
-            analyzed_at__month=dt.month,
-            analyzed_at__day=dt.day,
-            analyzed_at__hour=dt.hour,
-            analyzed_at__minute=dt.minute,
+            analyzed_at__year=recent_history.minute.year,
+            analyzed_at__month=recent_history.minute.month,
+            analyzed_at__day=recent_history.minute.day,
+            analyzed_at__hour=recent_history.minute.hour,
+            analyzed_at__minute=recent_history.minute.minute,
         )
         highest_open_rate_history = max(recent_histories, key=lambda h: h.open_rate)
     else:
@@ -131,9 +124,7 @@ class PcbangDeleteView(DeleteView):
 
 
 def analyze_history_view(request):
-    unique_datetimes = AnalyzeHistory.objects.get_queryset().values(
-        "year", "month", "day", "hour", "minute"
-    )
+    unique_datetimes = AnalyzeHistory.objects.get_queryset().values("minute")
 
     paginator = Paginator(unique_datetimes, 10)
     page_number = request.GET.get("page")
@@ -141,11 +132,12 @@ def analyze_history_view(request):
 
     grouped_histories = {}
     for item in page_obj:
+        print(item["minute"])
         dt = datetime(
-            year=item["year"].year,
-            month=item["month"].month,
-            day=item["day"].day,
-            hour=item["hour"].hour,
+            year=item["minute"].year,
+            month=item["minute"].month,
+            day=item["minute"].day,
+            hour=item["minute"].hour,
             minute=item["minute"].minute,
         )
         histories = AnalyzeHistory.objects.filter(
