@@ -82,7 +82,7 @@ dmypy.json
 .idea/
 
 # Django static files, from command `python manage.py collectstatic`
-static/
+staticfiles/
 
 # Oracle instant client
 /instantclient_21_11
