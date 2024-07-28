@@ -106,7 +106,7 @@ CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_BEAT_SCHEDULE = {
     "analyze-ip-every-30-minutes": {
         "task": "analyzer.tasks.analyze_pcbangs",
-        "schedule": crontab(minute="*/1"),
+        "schedule": crontab(minute="*/30"),
     },
 }
 
