@@ -40,7 +40,9 @@ def dashboard_index(request):
             "pcbang_list": pcbang_list,
             "pcbang_count": pcbang_count,
             "highest_open_rate_history": highest_open_rate_history,
-            "recent_history_analyzed_at": recent_history.analyzed_at,
+            "recent_history_analyzed_at": (
+                recent_history.analyzed_at if recent_history else None
+            ),
             "recent_histories": recent_histories,
         },
     )
