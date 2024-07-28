@@ -24,4 +24,9 @@ urlpatterns = [
         views.AnalyzeHistoryListView.as_view(),
         name="analyze-history-list",
     ),
+    path(
+        "analyze_pcbang/<int:pcbang_id>/",
+        views.analyze_pcbang,
+        name="analyze-pcbang",
+    ),
 ]

@@ -8,6 +8,7 @@ from django.db.models.functions import (
     TruncHour,
     TruncMinute,
 )
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import ListView
 from django.urls import reverse_lazy
@@ -173,3 +174,9 @@ class AnalyzeHistoryListView(ListView):
         context["city_name"] = self.request.GET.get("city_name", "")
         context["pcbang_name"] = self.request.GET.get("pcbang_name", "")
         return context
+
+
+def analyze_pcbang(request, pcbang_id):
+    pcbang = Pcbang.objects.get(id=pcbang_id)
+    open_count, close_count = pcbang.analyze_ip_accessible(datetime.now(), insert=False)
+    return JsonResponse({"open_count": open_count, "close_count": close_count})
