@@ -1,13 +1,6 @@
 from datetime import datetime
-from datetime import datetime
-from django.core.paginator import Paginator
-from django.db.models.functions import (
-    TruncYear,
-    TruncMonth,
-    TruncDay,
-    TruncHour,
-    TruncMinute,
-)
+from django.db.models.functions import TruncMinute
+
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import ListView
