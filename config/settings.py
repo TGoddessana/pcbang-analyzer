@@ -5,11 +5,11 @@ from celery.schedules import crontab
 import environ
 
 env = environ.Env()
-environ.Env.read_env()
+environ.Env.read_env(".env")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = env("DJANGO_SECRET_KEY")
+SECRET_KEY = env.str("DJANGO_SECRET_KEY", default="secret")
 
 DEBUG = True
 
