@@ -12,6 +12,7 @@ black = "^24.4.2"
 bpython = "^0.24"
 celery = "^5.4.0"
 redis = "^5.0.7"
+django-environ = "^0.11.2"
 
 
 [build-system]

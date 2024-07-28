@@ -2,14 +2,18 @@ import os
 from datetime import timedelta
 from pathlib import Path
 from celery.schedules import crontab
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "django-insecure-(n)&9@zy4wv7*5=7gpgw!w3&j*tw@cxmw$v4h%wqxwp##$j*l+"
+SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
