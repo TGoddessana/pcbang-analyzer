@@ -2,10 +2,6 @@ import socket
 
 from django.db import models
 from django.db.models.functions import (
-    TruncYear,
-    TruncMonth,
-    TruncDay,
-    TruncHour,
     TruncMinute,
 )
 
