@@ -8,4 +8,4 @@ poetry run python manage.py collectstatic --noinput
 
 poetry run celery -A config worker --loglevel=info &
 
-poetry run celery -A config beat --loglevel=info
+poetry run celery -A config beat --loglevel=info &
