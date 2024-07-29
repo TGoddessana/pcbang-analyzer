@@ -1,7 +1,14 @@
+from django.contrib.auth.views import LogoutView
 from django.urls import path
 from analyzer import views
 
 urlpatterns = [
+    path(
+        "login/",
+        views.LoginView.as_view(),
+        name="login",
+    ),
+    path("logout/", LogoutView.as_view(next_page="login"), name="logout"),
     path("city-list", views.CityListView.as_view(), name="city-list"),
     path("", views.dashboard_index, name="dashboard_index"),
     path("city-create/", views.CityCreateView.as_view(), name="city-create"),

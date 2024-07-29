@@ -1,8 +1,11 @@
 from datetime import datetime
+
+from django.contrib.auth.decorators import login_required
 from django.db.models.functions import TruncMinute
 
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -13,8 +16,14 @@ from analyzer.forms import (
     PcbangUpdateForm,
 )
 from analyzer.models import Pcbang, City, AnalyzeHistory
+from django.contrib.auth.views import LoginView as DjangoLoginView
 
 
+class LoginView(DjangoLoginView):
+    template_name = "auth/_login.html"
+
+
+@login_required
 def dashboard_index(request):
     pcbang_list = Pcbang.objects.all()
     pcbang_count = Pcbang.objects.count()
@@ -48,6 +57,7 @@ def dashboard_index(request):
     )
 
 
+@method_decorator(login_required, name="dispatch")
 class CityCreateView(CreateView):
     model = City
     form_class = CityCreateForm
@@ -55,6 +65,7 @@ class CityCreateView(CreateView):
     success_url = reverse_lazy("city-list")
 
 
+@method_decorator(login_required, name="dispatch")
 class CityListView(ListView):
     model = City
     template_name = "analyzer/city-list.html"
@@ -62,6 +73,7 @@ class CityListView(ListView):
     paginate_by = 10
 
 
+@method_decorator(login_required, name="dispatch")
 class CityUpdateView(UpdateView):
     model = City
     form_class = CityUpdateForm
@@ -69,12 +81,14 @@ class CityUpdateView(UpdateView):
     success_url = reverse_lazy("city-list")
 
 
+@method_decorator(login_required, name="dispatch")
 class CityDeleteView(DeleteView):
     model = City
     template_name = "analyzer/city-delete.html"
     success_url = reverse_lazy("city-list")
 
 
+@method_decorator(login_required, name="dispatch")
 class PcbangCreateView(CreateView):
     model = Pcbang
     form_class = PcbangCreateForm
@@ -87,6 +101,7 @@ class PcbangCreateView(CreateView):
         return context
 
 
+@method_decorator(login_required, name="dispatch")
 class PcbangListView(ListView):
     model = Pcbang
     template_name = "analyzer/pcbang-list.html"
@@ -101,6 +116,7 @@ class PcbangListView(ListView):
         return context
 
 
+@method_decorator(login_required, name="dispatch")
 class PcbangUpdateView(UpdateView):
     model = Pcbang
     form_class = PcbangUpdateForm
@@ -113,12 +129,14 @@ class PcbangUpdateView(UpdateView):
         return context
 
 
+@method_decorator(login_required, name="dispatch")
 class PcbangDeleteView(DeleteView):
     model = Pcbang
     template_name = "analyzer/pcbang-delete.html"
     success_url = reverse_lazy("pcbang-list")
 
 
+@method_decorator(login_required, name="dispatch")
 class AnalyzeHistoryListView(ListView):
     model = AnalyzeHistory
     template_name = "analyzer/analyze-history-list.html"
@@ -171,6 +189,7 @@ class AnalyzeHistoryListView(ListView):
         return context
 
 
+@login_required
 def analyze_pcbang(request, pcbang_id):
     pcbang = Pcbang.objects.get(id=pcbang_id)
     open_count, close_count = pcbang.analyze_ip_accessible(datetime.now(), insert=False)
