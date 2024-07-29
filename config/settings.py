@@ -108,28 +108,31 @@ CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_BEAT_SCHEDULE = {
     "analyze-ip-every-30-minutes": {
         "task": "analyzer.tasks.analyze_pcbangs",
-        "schedule": crontab(minute="*/30"),
+        "schedule": crontab(
+            minute=env.str("CELERY_BEAT_SCHEDULE_MINUTE", default="*/30")
+        ),
     },
 }
 
-LOGGING = {
-    "version": 1,
-    "loggers": {
-        "django.db.backends": {
-            "level": "DEBUG",
-            "handlers": ["console"],
-        }
-    },
-    "handlers": {
-        "console": {
-            "level": "DEBUG",
-            "class": "logging.StreamHandler",
-            "filters": ["require_debug_true"],
-        }
-    },
-    "filters": {
-        "require_debug_true": {
-            "()": "django.utils.log.RequireDebugTrue",
-        }
-    },
-}
+if DEBUG:
+    LOGGING = {
+        "version": 1,
+        "loggers": {
+            "django.db.backends": {
+                "level": "DEBUG",
+                "handlers": ["console"],
+            }
+        },
+        "handlers": {
+            "console": {
+                "level": "DEBUG",
+                "class": "logging.StreamHandler",
+                "filters": ["require_debug_true"],
+            }
+        },
+        "filters": {
+            "require_debug_true": {
+                "()": "django.utils.log.RequireDebugTrue",
+            }
+        },
+    }
