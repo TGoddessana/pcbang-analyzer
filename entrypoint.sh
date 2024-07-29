@@ -2,8 +2,6 @@
 
 poetry run python manage.py migrate
 
-poetry run python manage.py createsuperuser --noinput
-
 poetry run python manage.py collectstatic --noinput
 
 poetry run celery -A config worker --loglevel=info &
