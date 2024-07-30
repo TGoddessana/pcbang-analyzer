@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.db.models.functions import TruncMinute
+from django.core.paginator import Paginator
 
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -139,7 +140,6 @@ class AnalyzeHistoryListView(ListView):
     model = AnalyzeHistory
     template_name = "analyzer/analyze-history-list.html"
     context_object_name = "grouped_histories"
-    paginate_by = 10
 
     def get_queryset(self):
         city_name = self.request.GET.get("city_name", "")
@@ -163,10 +163,10 @@ class AnalyzeHistoryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        page_obj = context["page_obj"]
+        queryset = self.get_queryset()
 
         grouped_histories = {}
-        for item in page_obj:
+        for item in queryset:
             dt = item.minute
             histories = AnalyzeHistory.objects.filter(
                 analyzed_at__year=dt.year,
@@ -179,7 +179,12 @@ class AnalyzeHistoryListView(ListView):
             )
             grouped_histories[dt] = histories
 
-        context["grouped_histories"] = grouped_histories
+        paginator = Paginator(list(grouped_histories.items()), 3)
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        context["grouped_histories"] = dict(page_obj.object_list)
+        context["page_obj"] = page_obj
         context["city_list"] = self.get_city_list()
         context["pcbang_list"] = self.get_pcbang_list()
         context["city_name"] = self.request.GET.get("city_name", "")
