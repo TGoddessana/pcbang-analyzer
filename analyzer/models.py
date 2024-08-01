@@ -37,7 +37,7 @@ class Pcbang(models.Model):
     @property
     def end_ip(self):
         ip = self.ip.split(".")
-        return f"{ip[0]}.{ip[1]}.{ip[2]}.{self.seat_count}"
+        return f"{ip[0]}.{ip[1]}.{ip[2]}.{int(ip[3]) + self.seat_count}"
 
     def analyze_ip_accessible(self, analyzed_at, insert=False):
         open_count = 0
@@ -62,9 +62,11 @@ class Pcbang(models.Model):
         return open_count, close_count
 
     def _get_ip_range(self):
+        start_ip = self.start_ip.split(".")
+        end_ip = self.end_ip.split(".")
         return [
-            f'{self.ip.split(".")[0]}.{self.ip.split(".")[1]}.{self.ip.split(".")[2]}.{i}'
-            for i in range(1, self.seat_count + 1)
+            f"{start_ip[0]}.{start_ip[1]}.{start_ip[2]}.{i}"
+            for i in range(int(start_ip[3]), int(end_ip[3]) + 1)
         ]
 
     def __str__(self):
