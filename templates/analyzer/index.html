@@ -95,8 +95,6 @@
                                     <thead>
                                     <tr>
                                         <th>매장 이름</th>
-                                        <th>열려있는 좌석 수</th>
-                                        <th>닫혀있는 좌석 수</th>
                                         <th>가동률</th>
                                     </tr>
                                     </thead>
@@ -104,9 +102,9 @@
                                     {% for history in recent_histories %}
                                         <tr>
                                             <td>{{ history.pcbang.name }}</td>
-                                            <td>{{ history.open_count }}</td>
-                                            <td>{{ history.close_count }}</td>
-                                            <td>{{ history.open_rate|stringformat:".1f" }}%</td>
+                                            <td>{{ history.open_count }}/{{ history.open_count| add:history.close_count }}
+                                            ({{ history.open_rate|stringformat:".1f" }}%)
+                                        </td>
                                         </tr>
                                     {% empty %}
                                         <tr>
