@@ -9,6 +9,9 @@ from django.db.models.functions import (
 class City(models.Model):
     name = models.CharField("도시 이름", max_length=100, unique=True)
 
+    class Meta:
+        ordering = ["name"]
+
     def __str__(self):
         return self.name
 
