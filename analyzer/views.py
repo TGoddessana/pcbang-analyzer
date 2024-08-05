@@ -3,7 +3,7 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.db.models.functions import TruncMinute
 from django.core.paginator import Paginator
-
+from django.core.cache import cache
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
@@ -149,6 +149,7 @@ class AnalyzeHistoryListView(ListView):
                 pcbang__city__name__icontains=city_name,
                 pcbang__name__icontains=pcbang_name,
             )
+            .select_related("pcbang", "pcbang__city")
             .annotate(minute=TruncMinute("analyzed_at"))
             .distinct()
             .order_by("-minute")
@@ -168,16 +169,9 @@ class AnalyzeHistoryListView(ListView):
         grouped_histories = {}
         for item in queryset:
             dt = item.minute
-            histories = AnalyzeHistory.objects.filter(
-                analyzed_at__year=dt.year,
-                analyzed_at__month=dt.month,
-                analyzed_at__day=dt.day,
-                analyzed_at__hour=dt.hour,
-                analyzed_at__minute=dt.minute,
-                pcbang__city__name__icontains=self.request.GET.get("city_name", ""),
-                pcbang__name__icontains=self.request.GET.get("pcbang_name", ""),
-            )
-            grouped_histories[dt] = histories
+            if dt not in grouped_histories:
+                grouped_histories[dt] = []
+            grouped_histories[dt].append(item)
 
         paginator = Paginator(list(grouped_histories.items()), 3)
         page_number = self.request.GET.get("page")
