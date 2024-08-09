@@ -32,6 +32,16 @@ urlpatterns = [
         name="analyze-history-list",
     ),
     path(
+        "analyze-history-list/<int:year>/<int:month>/",
+        views.AnalyzeHistoryMonthArchiveView.as_view(month_format="%m"),
+        name="analyze-history-monthly",
+    ),
+    path(
+        "analyze-history-list/<int:year>/<int:month>/<int:day>/",
+        views.AnalyzeHistoryDayArchiveView.as_view(month_format="%m"),
+        name="analyze-history-daily",
+    ),
+    path(
         "analyze_pcbang/<int:pcbang_id>/",
         views.analyze_pcbang,
         name="analyze-pcbang",

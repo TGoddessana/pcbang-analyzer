@@ -4,10 +4,11 @@ from django.contrib.auth.decorators import login_required
 from django.db.models.functions import TruncMinute
 from django.core.paginator import Paginator
 from django.core.cache import cache
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView
+from django.utils.timezone import now
+from django.views.generic import ListView, MonthArchiveView, DayArchiveView
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from analyzer.forms import (
@@ -185,6 +186,20 @@ class AnalyzeHistoryListView(ListView):
         context["city_name"] = self.request.GET.get("city_name", "")
         context["pcbang_name"] = self.request.GET.get("pcbang_name", "")
         return context
+
+
+class AnalyzeHistoryMonthArchiveView(MonthArchiveView):
+    queryset = AnalyzeHistory.objects.all()
+    date_field = "analyzed_at"
+    allow_future = True
+    template_name = "analyzer/analyzehistory_monthly.html"
+
+
+class AnalyzeHistoryDayArchiveView(DayArchiveView):
+    queryset = AnalyzeHistory.objects.all()
+    date_field = "analyzed_at"
+    allow_future = True
+    template_name = "analyzer/analyzehistory_daily.html"
 
 
 @login_required

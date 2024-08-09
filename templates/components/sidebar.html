@@ -8,27 +8,44 @@
                     <i class="mdi mdi-home menu-icon"></i>
                 </a>
             </li>
+
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false"
-                   aria-controls="icons">
+                <a class="nav-link" data-bs-toggle="collapse" href="#pcbangs" aria-expanded="false"
+                   aria-controls="pcbangs">
                     <span class="menu-title">매장 관리</span>
                     <i class="menu-arrow"></i>
                 </a>
-                <div class="collapse" id="icons">
+                <div class="collapse" id="pcbangs">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item">
-                            <a class="nav-link" href={% url 'city-list' %}>도시 목록</a>
+                            <a class="nav-link" href={% url 'city-list' %}>도시</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'pcbang-list' %}">분석중인 매장 목록</a>
+                            <a class="nav-link" href="{% url 'pcbang-list' %}">분석중인 매장</a>
                         </li>
                     </ul>
                 </div>
             </li>
+
             <li class="nav-item">
-                    <span class="menu-title">
-                        <a class="nav-link" href="{% url 'analyze-history-list' %}">매장 분석기록</a>
-                    </span>
+                <a class="nav-link" data-bs-toggle="collapse" href="#analyze-histories" aria-expanded="false"
+                   aria-controls="analyze-histories">
+                    <span class="menu-title">매장 분석기록</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="analyze-histories">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'analyze-history-list' %}">전체 분석기록</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">월별 분석기록(준비중)</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">일별 분석기록(준비중)</a>
+                        </li>
+                    </ul>
+                </div>
             </li>
 
         </ul>
