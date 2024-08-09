@@ -22,6 +22,7 @@ class Pcbang(models.Model):
     ip = models.GenericIPAddressField("IP")
     port = models.IntegerField("포트", default=5040)
     seat_count = models.IntegerField("좌석수")
+    pc_plan_price = models.IntegerField("요금제 가격")
     pc_plan_ratio = models.FloatField("요금제 비율")
     pc_spec = models.CharField("PC 사양", max_length=100)
     telecom = models.CharField("통신사", max_length=100)
